@@ -1,12 +1,12 @@
-<div ng-controller="TaskController" class="container">
+<div ng-controller="TaskController" class="tasks container">
   <!-- Tasks -->
   <div ui-tree>
     <ol ui-tree-nodes="" ng-model="models.tasks">
-      <li ui-tree-node class="task truncate"
+      <li ui-tree-node class="task"
           ng-repeat="task in models.tasks"
           ng-style="taskColor($index / models.tasks.length)">
-        <div ui-tree-handle>
-          {{task.label}}
+        <div ui-tree-handle class="input-container">
+          <input autogrow value="task.label" ng-model="task.label" />
         </div>
       </li>
     </ol>

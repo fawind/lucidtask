@@ -18,7 +18,7 @@ angular.module('lucidtask')
     };
 
     $scope.add = function() {
-      console.log('Add task');
+      $scope.models.tasks.push({ label: 'New task' });
     };
 
     $scope.save = function() {
