@@ -1,0 +1,64 @@
+application: lucidtask
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /(.*\.css)
+  mime_type: text/css
+  static_files: public/\1
+  upload: public/(.*\.css)
+
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: public/\1
+  upload: public/(.*\.html)
+  expiration: "1h"
+
+- url: /(.*\.js)
+  mime_type: text/javascript
+  static_files: public/\1
+  upload: public/(.*\.js)
+
+- url: /(.*\.json)
+  mime_type: application/json
+  static_files: public/\1
+  upload: public/(.*\.json)
+  expiration: "1h"
+
+- url: /(.*\.map)
+  mime_type: application/json
+  static_files: public/\1
+  upload: public/(.*\.map)
+
+# fonts
+- url: /(.*\.ttf)
+  mime_type: font/truetype
+  static_files: public/\1
+  upload: public/(.*\.ttf)
+
+- url: /(.*\.(woff|woff2))
+  mime_type: application/x-font-woff
+  static_files: public/\1
+  upload: public/(.*\.(woff|woff2))
+
+# image files
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  static_files: public/\1
+  upload: public/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+
+# index files
+- url: /(.+)/
+  static_files: public/\1/index.html
+  upload: public/(.+)/index.html
+  expiration: "15m"
+
+# site root
+- url: /
+  static_files: public/index.html
+  upload: public/index.html
+  expiration: "15m"
+
+- url: /.*
+  script: app.main.app

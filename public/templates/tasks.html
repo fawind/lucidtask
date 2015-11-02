@@ -1,0 +1,20 @@
+<div ng-controller="TaskController" class="container">
+  <!-- Tasks -->
+  <div ui-tree>
+    <ol ui-tree-nodes="" ng-model="models.tasks">
+      <li ui-tree-node class="task truncate"
+          ng-repeat="task in models.tasks"
+          ng-style="taskColor($index / models.tasks.length)">
+        <div ui-tree-handle>
+          {{task.label}}
+        </div>
+      </li>
+    </ol>
+  </div>
+  <!-- /Tasks -->
+
+  <div class="buttons">
+    <a ng-click="save()" class="btn-floating btn-large waves-effect waves-light save"><i class="material-icons">done</i></a>
+    <a ng-click="add()" class="btn-floating btn-large waves-effect waves-light add"><i class="material-icons">add</i></a>
+  </div>
+</div>
