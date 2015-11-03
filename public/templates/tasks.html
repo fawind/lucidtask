@@ -1,6 +1,6 @@
 <div class="tasks container">
   <!-- Tasks -->
-  <div ui-tree="options" data-drag-delay="100" data-empty-placeholder-enabled="false">
+  <div ui-tree="options" data-empty-placeholder-enabled="false">
     <ol ui-tree-nodes="" ng-model="models.tasks">
       <li ui-tree-node class="task"
           ng-repeat="task in models.tasks"
@@ -22,7 +22,7 @@
   <!-- /Done -->
 
   <div class="buttons">
-    <a ng-click="save()" class="btn-floating btn-large waves-effect waves-light save"><i class="material-icons">done</i></a>
+    <a ng-show="changed()" ng-click="save()" class="btn-floating btn-large waves-effect waves-light save"><i class="material-icons">done</i></a>
     <a ng-click="add()" class="btn-floating btn-large waves-effect waves-light add"><i class="material-icons">add</i></a>
   </div>
 </div>

@@ -4,16 +4,29 @@ angular.module('lucidtask')
     var taskScale = chroma.chroma.scale(['#F44336', '#FFD54F']);
 
     var mockTasks = [
-      { label: 'Go to the gym', done: false },
-      { label: 'Buy groceries', done: false },
-      { label: 'Pick up dry cleaning', done: false },
-      { label: 'Reply to morning emails', done: false },
-      { label: 'Mow the lawn', done: false }
+      { label: 'Go to the gym' },
+      { label: 'Buy groceries' },
+      { label: 'Pick up dry cleaning' },
+      { label: 'Reply to morning emails' },
+      { label: 'Mow the lawn' }
     ];
 
     $scope.models = {
       tasks: mockTasks,
-      done: []
+      done: [],
+      initialTasks: _.clone(mockTasks, true)
+    };
+
+    $scope.changed = function() {
+      for (var i = 0; i < $scope.models.tasks.length; ++i) {
+        if ($scope.models.initialTasks[i] === undefined) {
+          return true;
+        }
+        if ($scope.models.tasks[i].label !== $scope.models.initialTasks[i].label) {
+          return true;
+        }
+      }
+      return false;
     };
 
     $scope.taskColor = function(index) {
@@ -70,7 +83,6 @@ angular.module('lucidtask')
       if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
         if (xDiff > deleteThreshold) {
           // Mark task as done
-          $scope.models.tasks[index].done = true;
           $scope.models.done.push(_.clone($scope.models.tasks[index]));
           e.source.nodeScope.remove();
         }
@@ -87,7 +99,3 @@ angular.module('lucidtask')
     };
 
   }]);
-
-
-  // x: +- 100
-  // y: +- 40
