@@ -17,6 +17,15 @@
     width: 10px;
 }
 
+/* Done list */
+.done {
+    color: #37474F;
+    list-style: none;
+    font-size: 2rem;
+    text-decoration: line-through;
+    padding: 1rem;
+}
+
 /* Buttons */
 .buttons {
     position: absolute;

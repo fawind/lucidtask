@@ -1,6 +1,6 @@
 <div class="tasks container">
   <!-- Tasks -->
-  <div ui-tree="options" data-drag-delay="100">
+  <div ui-tree="options" data-drag-delay="100" data-empty-placeholder-enabled="false">
     <ol ui-tree-nodes="" ng-model="models.tasks">
       <li ui-tree-node class="task"
           ng-repeat="task in models.tasks"
@@ -12,6 +12,14 @@
     </ol>
   </div>
   <!-- /Tasks -->
+
+  <!-- Done -->
+  <li class="done" ng-repeat="done in models.done" ng-dblclick="dismissDone()">
+    <div class="input-container truncate">
+      {{done.label}}
+    </div>
+  </li>
+  <!-- /Done -->
 
   <div class="buttons">
     <a ng-click="save()" class="btn-floating btn-large waves-effect waves-light save"><i class="material-icons">done</i></a>

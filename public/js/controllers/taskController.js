@@ -11,7 +11,10 @@ angular.module('lucidtask')
       { label: 'Mow the lawn', done: false }
     ];
 
-    $scope.models = { tasks: mockTasks };
+    $scope.models = {
+      tasks: mockTasks,
+      done: []
+    };
 
     $scope.taskColor = function(index) {
       return { backgroundColor: taskScale(index) };
@@ -25,55 +28,62 @@ angular.module('lucidtask')
       console.log('Save tasks');
     };
 
-    $scope.options = {
-      dragMove: function(e) {
-        // console.log(e);
-        var deleteThreshold = 100;
-        var doneThreshold = -100;
-        var topThreshold = 40;
-        var bottomThreshold = -40;
+    $scope.dismissDone = function() {
+      $scope.models.done = [];
+    };
 
-        var index = e.source.index;
-        var doneScale = chroma.chroma.scale(['#263238', '#8BC34A']);
-        var deleteScale = chroma.chroma.scale(['#263238', '#E53935']);
+    function changeBackground(e) {
+      var deleteThreshold = 100;
+      var doneThreshold = -100;
+      var topThreshold = 40;
+      var bottomThreshold = -40;
 
-        var xDiff = e.pos.nowX - e.pos.startX;
-        var yDiff = e.pos.nowY - e.pos.startY;
+      var index = e.source.index;
+      var doneScale = chroma.chroma.scale(['#263238', '#8BC34A']);
+      var deleteScale = chroma.chroma.scale(['#263238', '#E53935']);
 
-        if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
-          if (xDiff > 0) {
-            $scope.backgroundColor = { backgroundColor: doneScale(xDiff / deleteThreshold) };
-          } else {
-            $scope.backgroundColor = { backgroundColor: deleteScale(Math.abs(xDiff) / deleteThreshold) };
-          }
+      var xDiff = e.pos.nowX - e.pos.startX;
+      var yDiff = e.pos.nowY - e.pos.startY;
+
+      if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
+        if (xDiff > 0) {
+          $scope.backgroundColor = { backgroundColor: doneScale(xDiff / deleteThreshold) };
         } else {
-          $scope.backgroundColor = { backgroundColor: '#263238' };
+          $scope.backgroundColor = { backgroundColor: deleteScale(Math.abs(xDiff) / deleteThreshold) };
         }
-      },
-      dragStop: function(e) {
+      } else {
         $scope.backgroundColor = { backgroundColor: '#263238' };
-        var deleteThreshold = 100;
-        var doneThreshold = -100;
-        var topThreshold = 40;
-        var bottomThreshold = -40;
+      }
+    }
 
-        var index = e.source.index;
-        var xDiff = e.pos.nowX - e.pos.startX;
-        var yDiff = e.pos.nowY - e.pos.startY;
+    function handleDrop(e) {
+      $scope.backgroundColor = { backgroundColor: '#263238' };
+      var deleteThreshold = 100;
+      var doneThreshold = -100;
+      var topThreshold = 40;
+      var bottomThreshold = -40;
 
-        if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
-          if (xDiff > deleteThreshold) {
-            console.log('done');
-            $scope.models.tasks[index].done = true;
-          }
-          if (xDiff < doneThreshold) {
-            console.log(e);
-            e.source.nodeScope.remove();
-            //$scope.models.tasks.splice(index, 1);
-            console.log($scope.models.tasks);
-          }
+      var index = e.source.index;
+      var xDiff = e.pos.nowX - e.pos.startX;
+      var yDiff = e.pos.nowY - e.pos.startY;
+
+      if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
+        if (xDiff > deleteThreshold) {
+          // Mark task as done
+          $scope.models.tasks[index].done = true;
+          $scope.models.done.push(_.clone($scope.models.tasks[index]));
+          e.source.nodeScope.remove();
+        }
+        if (xDiff < doneThreshold) {
+          // Delete task
+          e.source.nodeScope.remove();
         }
       }
+    }
+
+    $scope.options = {
+      dragMove: function(e) { changeBackground(e); },
+      dragStop: function(e) { handleDrop(e); }
     };
 
   }]);
