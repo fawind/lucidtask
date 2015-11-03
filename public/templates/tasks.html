@@ -1,10 +1,10 @@
-<div ng-controller="TaskController" class="tasks container">
+<div class="tasks container">
   <!-- Tasks -->
-  <div ui-tree>
+  <div ui-tree="options" data-drag-delay="100">
     <ol ui-tree-nodes="" ng-model="models.tasks">
       <li ui-tree-node class="task"
           ng-repeat="task in models.tasks"
-          ng-style="taskColor($index / models.tasks.length)">
+          ng-style="task.dragColor || taskColor($index / models.tasks.length)">
         <div ui-tree-handle class="input-container">
           <input autogrow value="task.label" ng-model="task.label" />
         </div>
