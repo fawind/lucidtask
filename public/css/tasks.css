@@ -37,19 +37,10 @@
     margin-left: 1rem;
 }
 
-.save {
-    background-color: #29C6FF;
-}
-
 .add {
     background-color: #F44336;
-}
-
-.btn:hover.save, .btn-large:hover.save {
-    background-color: #7DDCFF;
 }
 
 .btn:hover.add, .btn-large:hover.add {
     background-color: #FB6363;
 }
-

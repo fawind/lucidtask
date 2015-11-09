@@ -1,32 +1,12 @@
 angular.module('lucidtask')
-  .controller('TaskController', ['$scope', 'chroma', 'lodash', function ($scope, chroma, _) {
+  .controller('TaskController', ['$scope', 'chroma', 'lodash', 'BroadcastService', 'TasksService',
+    function ($scope, chroma, _, broadcastService, tasksService) {
 
     var taskScale = chroma.chroma.scale(['#F44336', '#FFD54F']);
 
-    var mockTasks = [
-      { label: 'Go to the gym' },
-      { label: 'Buy groceries' },
-      { label: 'Pick up dry cleaning' },
-      { label: 'Reply to morning emails' },
-      { label: 'Mow the lawn' }
-    ];
-
     $scope.models = {
-      tasks: mockTasks,
-      done: [],
-      initialTasks: _.clone(mockTasks, true)
-    };
-
-    $scope.changed = function() {
-      for (var i = 0; i < $scope.models.tasks.length; ++i) {
-        if ($scope.models.initialTasks[i] === undefined) {
-          return true;
-        }
-        if ($scope.models.tasks[i].label !== $scope.models.initialTasks[i].label) {
-          return true;
-        }
-      }
-      return false;
+      tasks: [],
+      done: []
     };
 
     $scope.taskColor = function(index) {
@@ -34,11 +14,7 @@ angular.module('lucidtask')
     };
 
     $scope.add = function() {
-      $scope.models.tasks.push({ label: 'New task' });
-    };
-
-    $scope.save = function() {
-      console.log('Save tasks');
+      $scope.models.tasks.push({ title: 'New task' });
     };
 
     $scope.dismissDone = function() {
@@ -97,5 +73,13 @@ angular.module('lucidtask')
       dragMove: function(e) { changeBackground(e); },
       dragStop: function(e) { handleDrop(e); }
     };
+
+    broadcastService.apiLoaded.listen(function() {
+      console.log('api loaded!');
+      tasksService.getTasks()
+        .then(function(tasks) {
+          $scope.models.tasks = tasks;
+        });
+    });
 
   }]);

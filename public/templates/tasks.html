@@ -6,7 +6,7 @@
           ng-repeat="task in models.tasks"
           ng-style="task.dragColor || taskColor($index / models.tasks.length)">
         <div ui-tree-handle class="input-container">
-          <input autogrow value="task.label" ng-model="task.label" />
+          <input autogrow value="task.title" ng-model="task.title" />
         </div>
       </li>
     </ol>
@@ -16,13 +16,12 @@
   <!-- Done -->
   <li class="done" ng-repeat="done in models.done" ng-dblclick="dismissDone()">
     <div class="input-container truncate">
-      {{done.label}}
+      {{done.title}}
     </div>
   </li>
   <!-- /Done -->
 
   <div class="buttons">
-    <a ng-show="changed()" ng-click="save()" class="btn-floating btn-large waves-effect waves-light save"><i class="material-icons">done</i></a>
     <a ng-click="add()" class="btn-floating btn-large waves-effect waves-light add"><i class="material-icons">add</i></a>
   </div>
 </div>
