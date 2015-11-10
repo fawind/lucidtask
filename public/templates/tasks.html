@@ -24,4 +24,18 @@
   <div class="buttons">
     <a ng-click="add()" class="btn-floating btn-large waves-effect waves-light add"><i class="material-icons">add</i></a>
   </div>
+
+  <!-- Spinner -->
+  <div ng-show="loading" class="preloader-wrapper active spinner">
+    <div class="spinner-layer spinner-red-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+  <!-- /Spinner -->
 </div>

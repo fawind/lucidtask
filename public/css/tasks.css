@@ -44,3 +44,9 @@
 .btn:hover.add, .btn-large:hover.add {
     background-color: #FB6363;
 }
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

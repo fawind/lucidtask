@@ -2,6 +2,7 @@ angular.module('lucidtask')
   .controller('TaskController', ['$scope', 'chroma', 'lodash', 'BroadcastService', 'TasksService',
     function ($scope, chroma, _, broadcastService, tasksService) {
 
+    $scope.loading = true;
     var taskScale = chroma.chroma.scale(['#F44336', '#FFD54F']);
 
     $scope.models = {
@@ -26,7 +27,7 @@ angular.module('lucidtask')
       var newTitle = 'New task';
       var taskLength = $scope.models.tasks.length;
       var previousId = -1;
-      
+
       if (taskLength > 0)
         previousId = $scope.models.tasks[taskLength - 1].id;
 
@@ -147,6 +148,7 @@ angular.module('lucidtask')
       console.log('api loaded!');
       tasksService.getTasks()
         .then(function(response) {
+          $scope.loading = false;
           console.log(response.items);
 
           _.each(response.items, function(task) {
