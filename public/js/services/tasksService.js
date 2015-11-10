@@ -1,7 +1,7 @@
 angular.module('lucidtask')
   .factory('TasksService', ['$http', '$q', function($http, $q) {
 
-    var mockListId = 'MDYxNzIwODMyMTMyNjg3Njg4MzA6MzI4NjE3NTgzOjA';
+    var defaultList = '@default';
 
     function executeRequest(request) {
       var errorMessage = 'Oops, something went wrong!';
@@ -26,7 +26,7 @@ angular.module('lucidtask')
 
     function getTasks() {
       var body = {
-        tasklist: mockListId
+        tasklist: defaultList
       };
 
       var request = gapi.client.tasks.tasks.list(body);
@@ -36,7 +36,7 @@ angular.module('lucidtask')
 
     function addTask(title, previousId) {
       var body = {
-        tasklist: mockListId,
+        tasklist: defaultList,
         title: title
       };
 
@@ -51,7 +51,7 @@ angular.module('lucidtask')
 
     function deleteTask(taskId) {
       var body = {
-        tasklist: mockListId,
+        tasklist: defaultList,
         task: taskId
       };
 
@@ -62,7 +62,7 @@ angular.module('lucidtask')
 
     function updateTask(task) {
       var body = {
-        tasklist: mockListId,
+        tasklist: defaultList,
         task: task.id,
         id: task.id,
         title: task.title,
@@ -76,7 +76,7 @@ angular.module('lucidtask')
 
     function moveTask(taskId, previousId) {
       var body = {
-        tasklist: mockListId,
+        tasklist: defaultList,
         task: taskId
       };
 
@@ -91,7 +91,7 @@ angular.module('lucidtask')
 
     function clearTasks() {
       var body = {
-        tasklist: mockListId
+        tasklist: defaultList
       };
 
       var request = gapi.client.tasks.tasks.clear(body);
