@@ -59,6 +59,7 @@ angular.module('lucidtask')
       if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
         if (xDiff > deleteThreshold) {
           // Mark task as done
+          $scope.models.tasks[index].status = 'completed';
           $scope.models.done.push(_.clone($scope.models.tasks[index]));
           e.source.nodeScope.remove();
         }
@@ -77,8 +78,9 @@ angular.module('lucidtask')
     broadcastService.apiLoaded.listen(function() {
       console.log('api loaded!');
       tasksService.getTasks()
-        .then(function(tasks) {
-          $scope.models.tasks = tasks;
+        .then(function(response) {
+          console.log(response.items);
+          $scope.models.tasks = response.items;
         });
     });
 
