@@ -4,9 +4,22 @@ angular.module('lucidtask')
     var mockListId = 'MDYxNzIwODMyMTMyNjg3Njg4MzA6MzI4NjE3NTgzOjA';
 
     function executeRequest(request) {
+      var errorMessage = 'Oops, something went wrong!';
+
       return $q(function(resolve, reject) {
         request.execute(function(response) {
-          resolve(response);
+          if (response.error) {
+            Materialize.toast(errorMessage, 3000);
+            console.error(
+              'API error (' + response.error.code + '):',
+              response.error.message
+            );
+
+            reject(response);
+          }
+          else {
+            resolve(response);
+          }
         });
       });
     }

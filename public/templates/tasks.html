@@ -6,7 +6,7 @@
           ng-repeat="task in models.tasks"
           ng-style="task.dragColor || taskColor($index / models.tasks.length)">
         <div ui-tree-handle class="input-container">
-          <input autogrow value="task.title" ng-model="task.title" ng-model-options="{ updateOn: 'blur' }" ng-change="updateTitle($index)" />
+          <input autogrow value="task.title" ng-model="task.title" ng-model-options="{ updateOn: 'blur' }" ng-change="updateTitle($index, '{{task.title}}')" />
         </div>
       </li>
     </ol>
@@ -21,7 +21,7 @@
   </li>
   <!-- /Done -->
 
-  <div class="buttons">
+  <div class="buttons" ng-hide="loading">
     <a ng-click="add()" class="btn-floating btn-large waves-effect waves-light add"><i class="material-icons">add</i></a>
   </div>
 

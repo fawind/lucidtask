@@ -14,13 +14,14 @@ angular.module('lucidtask')
       return { backgroundColor: taskScale(index) };
     };
 
-    $scope.updateTitle = function(index) {
+    $scope.updateTitle = function(index, oldTitle) {
       var changedTask = $scope.models.tasks[index];
 
       tasksService.updateTask(changedTask)
-        .then(function(response) {
-          console.log(response);
-        });
+        .then(
+          function(response) {},
+          function(error) { changedTask.title = oldTitle; }
+        );
     };
 
     $scope.add = function() {
@@ -34,17 +35,24 @@ angular.module('lucidtask')
       var newTaskLength = $scope.models.tasks.push({ title: newTitle });
 
       tasksService.addTask(newTitle, previousId)
-        .then(function(response) {
-          $scope.models.tasks[newTaskLength - 1] = response;
-        });
+        .then(
+          function(response) {
+            $scope.models.tasks[newTaskLength - 1] = response;
+          },
+          function(error) {
+            $scope.models.tasks.splice(newTaskLength - 1, 1);
+          }
+        );
     };
 
     $scope.dismissDone = function() {
+      var doneTasks = $scope.models.done;
       $scope.models.done = [];
       tasksService.clearTasks()
-        .then(function(response) {
-          console.log(response);
-        });
+        .then(
+          function(response) {},
+          function(error) { $scope.models.done = doneTasks; }
+        );
     };
 
     function changeBackground(e) {
@@ -99,7 +107,6 @@ angular.module('lucidtask')
 
     function dismissTask(e) {
       var sourceIndex = e.source.index;
-      var deletedTaskId = $scope.models.tasks[sourceIndex].id;
 
       $scope.models.tasks[sourceIndex].status = 'completed';
       var dismissedTask = _.clone($scope.models.tasks[sourceIndex]);
@@ -107,20 +114,28 @@ angular.module('lucidtask')
       e.source.nodeScope.remove();
 
       tasksService.updateTask(dismissedTask)
-        .then(function(response) {
-          console.log(response);
-        });
+        .then(
+          function(response) {},
+          function(error) {
+            dismissedTask.status = 'needsAction';
+            $scope.models.done.pop();
+            $scope.models.tasks.splice(sourceIndex, 0, dismissedTask);
+          }
+        );
     }
 
     function deleteTask(e) {
       var sourceIndex = e.source.index;
-      var deletedTaskId = $scope.models.tasks[sourceIndex].id;
+      var deletedTask = $scope.models.tasks[sourceIndex];
       e.source.nodeScope.remove();
 
-      tasksService.deleteTask(deletedTaskId)
-        .then(function(response) {
-          console.log(response);
-        });
+      tasksService.deleteTask(deletedTask.id)
+        .then(
+          function(response) {},
+          function(error) {
+            $scope.models.tasks.splice(sourceIndex, 0, deletedTask);
+          }
+        );
     }
 
     function moveTask(e) {
@@ -134,9 +149,13 @@ angular.module('lucidtask')
       }
 
       tasksService.moveTask(movedTaskId, previousId)
-        .then(function(results) {
-          console.log(results);
-        });
+        .then(
+          function(results) {},
+          function(error) {
+            var movedTask = $scope.models.tasks.splice(destIndex, 1)[0];
+            $scope.models.tasks.splice(sourceIndex, 0, movedTask);
+          }
+        );
     }
 
     $scope.options = {
@@ -144,21 +163,21 @@ angular.module('lucidtask')
       dragStop: function(e) { handleDrop(e); }
     };
 
+    function fillTasks(tasks) {
+      _.each(tasks, function(task) {
+        if (task.status === 'completed') {
+          $scope.models.done.push(task);
+        } else {
+          $scope.models.tasks.push(task);
+        }
+      });
+    }
+
     broadcastService.apiLoaded.listen(function() {
-      console.log('api loaded!');
       tasksService.getTasks()
         .then(function(response) {
           $scope.loading = false;
-          console.log(response.items);
-
-          _.each(response.items, function(task) {
-            if (task.status === 'completed') {
-              $scope.models.done.push(task);
-            } else {
-              $scope.models.tasks.push(task);
-            }
-          });
-
+          fillTasks(response.items);
         });
     });
 
