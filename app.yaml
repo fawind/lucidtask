@@ -59,6 +59,3 @@ handlers:
   static_files: public/index.html
   upload: public/index.html
   expiration: "15m"
-
-- url: /.*
-  script: app.main.app
