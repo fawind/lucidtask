@@ -7,12 +7,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fawind/lucid.git"
+    "url": "git+https://github.com/fawind/lucidtask.git"
   },
   "bugs": {
-    "url": "https://github.com/fawind/lucid/issues"
+    "url": "https://github.com/fawind/lucidtask/issues"
   },
-  "homepage": "https://github.com/fawind/lucid#readme",
+  "homepage": "https://github.com/fawind/lucidtask#readme",
   "dependencies": {
   },
   "devDependencies": {
