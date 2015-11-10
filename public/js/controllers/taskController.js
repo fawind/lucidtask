@@ -13,12 +13,37 @@ angular.module('lucidtask')
       return { backgroundColor: taskScale(index) };
     };
 
+    $scope.updateTitle = function(index) {
+      var changedTask = $scope.models.tasks[index];
+
+      tasksService.updateTask(changedTask)
+        .then(function(response) {
+          console.log(response);
+        });
+    };
+
     $scope.add = function() {
-      $scope.models.tasks.push({ title: 'New task' });
+      var newTitle = 'New task';
+      var taskLength = $scope.models.tasks.length;
+      var previousId = -1;
+      
+      if (taskLength > 0)
+        previousId = $scope.models.tasks[taskLength - 1].id;
+
+      var newTaskLength = $scope.models.tasks.push({ title: newTitle });
+
+      tasksService.addTask(newTitle, previousId)
+        .then(function(response) {
+          $scope.models.tasks[newTaskLength - 1] = response;
+        });
     };
 
     $scope.dismissDone = function() {
       $scope.models.done = [];
+      tasksService.clearTasks()
+        .then(function(response) {
+          console.log(response);
+        });
     };
 
     function changeBackground(e) {
@@ -52,22 +77,65 @@ angular.module('lucidtask')
       var topThreshold = 40;
       var bottomThreshold = -40;
 
-      var index = e.source.index;
+      var sourceIndex = e.source.index;
+      var destIndex = e.dest.index;
       var xDiff = e.pos.nowX - e.pos.startX;
       var yDiff = e.pos.nowY - e.pos.startY;
 
-      if (yDiff <= topThreshold && yDiff >= bottomThreshold) {
+      /* Check if delete or dismissed */
+      if (yDiff <= topThreshold && yDiff >= bottomThreshold && sourceIndex === destIndex) {
         if (xDiff > deleteThreshold) {
-          // Mark task as done
-          $scope.models.tasks[index].status = 'completed';
-          $scope.models.done.push(_.clone($scope.models.tasks[index]));
-          e.source.nodeScope.remove();
+          dismissTask(e);
         }
-        if (xDiff < doneThreshold) {
-          // Delete task
-          e.source.nodeScope.remove();
+        else if (xDiff < doneThreshold) {
+          deleteTask(e);
         }
       }
+      else {
+        moveTask(e);
+      }
+    }
+
+    function dismissTask(e) {
+      var sourceIndex = e.source.index;
+      var deletedTaskId = $scope.models.tasks[sourceIndex].id;
+
+      $scope.models.tasks[sourceIndex].status = 'completed';
+      var dismissedTask = _.clone($scope.models.tasks[sourceIndex]);
+      $scope.models.done.push(dismissedTask);
+      e.source.nodeScope.remove();
+
+      tasksService.updateTask(dismissedTask)
+        .then(function(response) {
+          console.log(response);
+        });
+    }
+
+    function deleteTask(e) {
+      var sourceIndex = e.source.index;
+      var deletedTaskId = $scope.models.tasks[sourceIndex].id;
+      e.source.nodeScope.remove();
+
+      tasksService.deleteTask(deletedTaskId)
+        .then(function(response) {
+          console.log(response);
+        });
+    }
+
+    function moveTask(e) {
+      var sourceIndex = e.source.index;
+      var destIndex = e.dest.index;
+      var movedTaskId = $scope.models.tasks[destIndex].id;
+      
+      var previousId = -1;
+      if (destIndex !== 0) {
+        previousId = $scope.models.tasks[destIndex - 1].id;
+      }
+
+      tasksService.moveTask(movedTaskId, previousId)
+        .then(function(results) {
+          console.log(results);
+        });
     }
 
     $scope.options = {
@@ -80,7 +148,15 @@ angular.module('lucidtask')
       tasksService.getTasks()
         .then(function(response) {
           console.log(response.items);
-          $scope.models.tasks = response.items;
+
+          _.each(response.items, function(task) {
+            if (task.status === 'completed') {
+              $scope.models.done.push(task);
+            } else {
+              $scope.models.tasks.push(task);
+            }
+          });
+
         });
     });
 

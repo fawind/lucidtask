@@ -52,7 +52,8 @@ angular.module('lucidtask')
         tasklist: mockListId,
         task: task.id,
         id: task.id,
-        title: task.title
+        title: task.title,
+        status: task.status
       };
 
       var request = gapi.client.tasks.tasks.update(body);
@@ -75,11 +76,22 @@ angular.module('lucidtask')
       return executeRequest(request);
     }
 
+    function clearTasks() {
+      var body = {
+        tasklist: mockListId
+      };
+
+      var request = gapi.client.tasks.tasks.clear(body);
+
+      return executeRequest(request);
+    }
+
     return {
       getTasks: getTasks,
       updateTask: updateTask,
       deleteTask: deleteTask,
       moveTask: moveTask,
-      addTask: addTask
+      addTask: addTask,
+      clearTasks: clearTasks
     };
   }]);
