@@ -12,7 +12,19 @@ angular.module('lucidtask')
       }
     };
 
+    var listChanged = {
+      broadcast: function(id) {
+        $rootScope.$broadcast('list-changed', { id: id });
+      },
+      listen: function(callback) {
+        $rootScope.$on('list-changed', function(event, args) {
+          callback(args.id);
+        });
+      }
+    };
+
     return {
-      apiLoaded: apiLoaded
+      apiLoaded: apiLoaded,
+      listChanged: listChanged
     };
   }]);

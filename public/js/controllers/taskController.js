@@ -10,6 +10,8 @@ angular.module('lucidtask')
       done: []
     };
 
+    var taskList = '@default';
+
     $scope.taskColor = function(index) {
       return { backgroundColor: taskScale(index) };
     };
@@ -17,7 +19,7 @@ angular.module('lucidtask')
     $scope.updateTitle = function(index, oldTitle) {
       var changedTask = $scope.models.tasks[index];
 
-      tasksService.updateTask(changedTask)
+      tasksService.updateTask(taskList, changedTask)
         .then(
           function(response) {},
           function(error) { changedTask.title = oldTitle; }
@@ -34,7 +36,7 @@ angular.module('lucidtask')
 
       var newTaskLength = $scope.models.tasks.push({ title: newTitle });
 
-      tasksService.addTask(newTitle, previousId)
+      tasksService.addTask(taskList, newTitle, previousId)
         .then(
           function(response) {
             $scope.models.tasks[newTaskLength - 1] = response;
@@ -48,7 +50,7 @@ angular.module('lucidtask')
     $scope.dismissDone = function() {
       var doneTasks = $scope.models.done;
       $scope.models.done = [];
-      tasksService.clearTasks()
+      tasksService.clearTasks(taskList)
         .then(
           function(response) {},
           function(error) { $scope.models.done = doneTasks; }
@@ -113,7 +115,7 @@ angular.module('lucidtask')
       $scope.models.done.push(dismissedTask);
       e.source.nodeScope.remove();
 
-      tasksService.updateTask(dismissedTask)
+      tasksService.updateTask(taskList, dismissedTask)
         .then(
           function(response) {},
           function(error) {
@@ -129,7 +131,7 @@ angular.module('lucidtask')
       var deletedTask = $scope.models.tasks[sourceIndex];
       e.source.nodeScope.remove();
 
-      tasksService.deleteTask(deletedTask.id)
+      tasksService.deleteTask(taskList, deletedTask.id)
         .then(
           function(response) {},
           function(error) {
@@ -148,7 +150,7 @@ angular.module('lucidtask')
         previousId = $scope.models.tasks[destIndex - 1].id;
       }
 
-      tasksService.moveTask(movedTaskId, previousId)
+      tasksService.moveTask(taskList, movedTaskId, previousId)
         .then(
           function(results) {},
           function(error) {
@@ -164,6 +166,9 @@ angular.module('lucidtask')
     };
 
     function fillTasks(tasks) {
+      $scope.models.tasks = [];
+      $scope.models.done = [];
+      
       _.each(tasks, function(task) {
         if (task.status === 'completed') {
           $scope.models.done.push(task);
@@ -174,7 +179,16 @@ angular.module('lucidtask')
     }
 
     broadcastService.apiLoaded.listen(function() {
-      tasksService.getTasks()
+      tasksService.getTasks(taskList)
+        .then(function(response) {
+          $scope.loading = false;
+          fillTasks(response.items);
+        });
+    });
+
+    broadcastService.listChanged.listen(function(id) {
+      taskList = id;
+      tasksService.getTasks(taskList)
         .then(function(response) {
           $scope.loading = false;
           fillTasks(response.items);

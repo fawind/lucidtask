@@ -1,8 +1,6 @@
 angular.module('lucidtask')
   .factory('TasksService', ['$http', '$q', function($http, $q) {
 
-    var defaultList = '@default';
-
     function executeRequest(request) {
       var errorMessage = 'Oops, something went wrong!';
 
@@ -24,9 +22,9 @@ angular.module('lucidtask')
       });
     }
 
-    function getTasks() {
+    function getTasks(taskList) {
       var body = {
-        tasklist: defaultList
+        tasklist: taskList
       };
 
       var request = gapi.client.tasks.tasks.list(body);
@@ -34,9 +32,9 @@ angular.module('lucidtask')
       return executeRequest(request);
     }
 
-    function addTask(title, previousId) {
+    function addTask(taskList, title, previousId) {
       var body = {
-        tasklist: defaultList,
+        tasklist: taskList,
         title: title
       };
 
@@ -49,9 +47,9 @@ angular.module('lucidtask')
       return executeRequest(request);
     }
 
-    function deleteTask(taskId) {
+    function deleteTask(taskList, taskId) {
       var body = {
-        tasklist: defaultList,
+        tasklist: taskList,
         task: taskId
       };
 
@@ -60,9 +58,9 @@ angular.module('lucidtask')
       return executeRequest(request);
     }
 
-    function updateTask(task) {
+    function updateTask(taskList, task) {
       var body = {
-        tasklist: defaultList,
+        tasklist: taskList,
         task: task.id,
         id: task.id,
         title: task.title,
@@ -74,9 +72,9 @@ angular.module('lucidtask')
       return executeRequest(request);
     }
 
-    function moveTask(taskId, previousId) {
+    function moveTask(taskList, taskId, previousId) {
       var body = {
-        tasklist: defaultList,
+        tasklist: taskList,
         task: taskId
       };
 
@@ -89,13 +87,18 @@ angular.module('lucidtask')
       return executeRequest(request);
     }
 
-    function clearTasks() {
+    function clearTasks(taskList) {
       var body = {
-        tasklist: defaultList
+        tasklist: taskList
       };
 
       var request = gapi.client.tasks.tasks.clear(body);
 
+      return executeRequest(request);
+    }
+
+    function getLists() {
+      var request = gapi.client.tasks.tasklists.list();
       return executeRequest(request);
     }
 
@@ -105,6 +108,7 @@ angular.module('lucidtask')
       deleteTask: deleteTask,
       moveTask: moveTask,
       addTask: addTask,
-      clearTasks: clearTasks
+      clearTasks: clearTasks,
+      getLists: getLists
     };
   }]);

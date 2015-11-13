@@ -1,5 +1,10 @@
-<a class="list" id="active">1</a>
-<a class="list">2</a>
-<a class="list">3</a>
+<div ng-controller="ListController">
+    <a class="list" 
+       ng-repeat="list in models.lists"
+       ng-click="loadList($index, list.id)"
+       id="{{$index != active || 'active'}}">
+       {{list.label}}
+    </a>
 
-<a class="list">+</a>
+    <a class="list" ng-click="newList()">+</a>
+</div>
