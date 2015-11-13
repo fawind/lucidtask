@@ -1,0 +1,24 @@
+/*.user {
+    font-size: 40px;
+    background-color: #F44336;
+    color: white; 
+}*/
+
+.sidebar a {
+  display: inline-block;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #455A64;
+  border-style: solid;
+  border-color: #455A64;
+}
+
+.sidebar a:hover {
+  background-color: #546E7A;
+}
+
+.sidebar #active {
+  color: #37474F;
+  background-color: #455A64
+}

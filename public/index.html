@@ -15,11 +15,15 @@
   <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css">
   <link type="text/css" rel="stylesheet" href="css/main.css" />
   <link type="text/css" rel="stylesheet" href="css/tasks.css" />
+  <link type="text/css" rel="stylesheet" href="css/sidebar.css" />
   <!-- endbuild-->  
 </head>
 
 <body ng-app="lucidtask" ng-controller="TaskController" ng-style="backgroundColor">
-  <div ng-include src="'templates/tasks.html'"></div>
+  <div class="wrapper">
+    <div class="sidebar" ng-include src="'templates/sidebar.html'"></div>
+    <div class="tasks" ng-include src="'templates/tasks.html'"></div>
+  </div>
 
   <!-- build:js js/app.js -->
   <script src="bower_components/jquery/dist/jquery.js"></script>

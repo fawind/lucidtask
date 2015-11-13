@@ -4,3 +4,26 @@ html, body {
   background-color: #263238;
   color: white;
 }
+
+.wrapper {
+    position: relative;
+    padding: 0 0 0 4rem;
+    height: 100%;
+}
+
+.sidebar {
+    position: absolute;
+    top:0; bottom:0; left:0;
+    width: 4rem;
+    height: 100%;
+    background: #37474F;
+    text-align: center;
+}
+
+@media (max-width: 978px) {
+  .container {
+    padding:0;
+    margin:0;
+    width: 100%;
+  }
+}
