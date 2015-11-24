@@ -1,6 +1,24 @@
 angular.module('lucidtask')
-  .factory('AuthService', ['BroadcastService', 'CLIENT_ID', 'SCOPES',
-    function(broadcastService, CLIENT_ID, SCOPES) {
+  .factory('AuthService', ['$q', 'BroadcastService', 'CLIENT_ID', 'SCOPES',
+    function($q, broadcastService, CLIENT_ID, SCOPES) {
+
+    function renewSession() {
+      var body = {
+        client_id: CLIENT_ID,
+        scope: SCOPES.join(' '),
+        immediate: true
+      };
+
+      return $q(function(resolve, reject) {
+        gapi.auth.authorize(body, function(authResult) {
+          if (authResult && !authResult.error) {
+            resolve(authResult);
+          } else {
+            reject(authResult);
+          }
+        });
+      });
+    }
 
     /* Check if session is still valid */
     function checkAuth() {
@@ -42,6 +60,9 @@ angular.module('lucidtask')
       broadcastService.apiLoaded.broadcast();
     }
 
-    return { checkAuth: checkAuth };
+    return {
+      checkAuth: checkAuth,
+      renewSession: renewSession
+    };
 
   }]);

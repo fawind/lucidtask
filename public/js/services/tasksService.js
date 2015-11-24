@@ -1,5 +1,5 @@
 angular.module('lucidtask')
-  .factory('TasksService', ['$http', '$q', function($http, $q) {
+  .factory('TasksService', ['$http', '$q', 'AuthService', function($http, $q, authService) {
 
     function executeRequest(request) {
       var errorMessage = 'Oops, something went wrong!';
@@ -7,19 +7,43 @@ angular.module('lucidtask')
       return $q(function(resolve, reject) {
         request.execute(function(response) {
           if (response.error) {
-            Materialize.toast(errorMessage, 3000);
-            console.error(
-              'API error (' + response.error.code + '):',
-              response.error.message
-            );
+            if (response.error.code === 401) {
+              renewSession(request, response.error, reject);
+              return;
+            }
 
-            reject(response);
+            handleError(response.error, reject);            
           }
           else {
             resolve(response);
           }
         });
       });
+    }
+
+    function renewSession(request, error, reject) {
+      console.log('Try to renew session!', error);
+      authService.renewSession()
+        .then(
+          function(success) {
+            console.log('Success!');
+            executeRequest(request);
+          },
+          function(error) {
+            console.log('Error:', error);
+            handleError(error, request);
+          }
+        );
+    }
+
+    function handleError(error, reject) {
+      Materialize.toast(errorMessage, 3000);
+      console.error(
+        'API error (' + error.code + '):',
+        error.message
+      );
+
+      reject(response);
     }
 
     function getTasks(taskList) {
