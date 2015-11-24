@@ -6,7 +6,11 @@
           ng-repeat="task in models.tasks"
           ng-style="task.dragColor || taskColor($index / models.tasks.length)">
         <div ui-tree-handle class="input-container">
-          <input autogrow value="task.title" ng-model="task.title" ng-model-options="{ updateOn: 'blur' }" ng-change="updateTitle($index, '{{task.title}}')" />
+          <input pu-elastic-input ng-enter
+                 value="task.title"
+                 ng-model="task.title"
+                 ng-blur="updateTitle($index, '{{task.title}}')"
+                 onClick="this.select();" />
         </div>
       </li>
     </ol>

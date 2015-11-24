@@ -1,5 +1,5 @@
 # lucidtask
-Minimal Todo list based on Google Tasks and heavily inspired by [Clear](http://realmacsoftware.com/clear/).
+Minimal Todo list based on Google Tasks. Heavily inspired by [Clear](http://realmacsoftware.com/clear/).
 
 #### Installation
 Requires the [Google App Engine](https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python) and [bower](http://bower.io/#install-bower).

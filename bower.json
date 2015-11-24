@@ -10,6 +10,7 @@
     "ng-lodash": "~0.3.0",
     "Materialize": "materialize#~0.97.1",
     "angular-chroma": "*",
-    "angular-ui-tree": "~2.10.0"
+    "angular-ui-tree": "~2.10.0",
+    "angular-elastic-input": "~2.2.0"
   }
 }

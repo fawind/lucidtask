@@ -3,7 +3,8 @@
     [
       'ngLodash',
       'chroma.angularChroma',
-      'ui.tree'
+      'ui.tree',
+      'puElasticInput'
     ]
   );
 

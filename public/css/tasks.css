@@ -1,12 +1,12 @@
 .task {
     background-color: red;
     font-size: 2rem;
-    padding: 1rem;
 }
 
 .input-container {
     padding-left: 20px;
     padding-right: 20px;
+    padding: 1rem;
 }
 
 .task input {

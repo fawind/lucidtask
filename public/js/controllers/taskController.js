@@ -12,6 +12,11 @@ angular.module('lucidtask')
 
     var taskList = '@default';
 
+    $scope.options = {
+      dragMove: function(e) { changeBackground(e); },
+      dragStop: function(e) { handleDrop(e); }
+    };
+
     $scope.taskColor = function(index) {
       return { backgroundColor: taskScale(index) };
     };
@@ -159,11 +164,6 @@ angular.module('lucidtask')
           }
         );
     }
-
-    $scope.options = {
-      dragMove: function(e) { changeBackground(e); },
-      dragStop: function(e) { handleDrop(e); }
-    };
 
     function fillTasks(tasks) {
       $scope.models.tasks = [];
