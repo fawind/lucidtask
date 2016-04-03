@@ -16,6 +16,8 @@ const TodoList = ({ todos, actions }) => {
     const _item = item;
     _item.edit = true;
   };
+  const swipeLeft = () => console.log('Swipe left');
+  const swipeRight = () => console.log('Swipe right');
 
   return (
     <Reorder
@@ -24,6 +26,8 @@ const TodoList = ({ todos, actions }) => {
       holdTime="500"
       callback={reordered}
       itemClicked={itemClicked}
+      swipeLeft={swipeLeft}
+      swipeRight={swipeRight}
       list={list}
       template={Todo}
       listClass="todoList"

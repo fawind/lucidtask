@@ -15,7 +15,8 @@ var Reorder = React.createClass({
     SCROLL_DISTANCE: 1,
     SCROLL_AREA: 50,
     SCROLL_MULTIPLIER: 5,
-    LOCK_DISTANCE_THRESHOLD: 15
+    LOCK_DISTANCE_THRESHOLD: 15,
+    SWIPE_DISTANCE_THRESHOLD: 150
   },
   preventDefault: function (event) {
     event.preventDefault();
@@ -24,6 +25,14 @@ var Reorder = React.createClass({
     if (event.touches && event.touches.length) {
       event.clientX = event.touches[0].clientX;
       event.clientY = event.touches[0].clientY;
+    }
+  },
+  onSwipeOut: function () {
+    var swipedLeft = this.state.pointer.clientX < this.state.downPos.clientX;
+    if (swipedLeft && typeof this.props.swipeLeft === 'function') {
+      this.props.swipeLeft(event, this.state.dragged.item, this.state.dragged.index, this.state.list);
+    } else if (!swipedLeft && typeof this.props.swipeRight === 'function') {
+      this.props.swipeRight(event, this.state.dragged.item, this.state.dragged.index, this.state.list);
     }
   },
   startDrag: function (dragOffset, draggedStyle) {
@@ -131,11 +140,18 @@ var Reorder = React.createClass({
     }
 
     // Reorder callback
-    if (this.state.held && this.state.dragged && typeof this.props.callback === 'function') {
+    if (this.state.held && this.state.dragged) {
       var listElements = this.nodesToArray(ReactDOM.findDOMNode(this).childNodes);
       var newIndex = listElements.indexOf(this.state.dragged.target);
+      var distanceX = this.getDistanceX(this.state.pointer, this.state.downPos);
 
-      this.props.callback(event, this.state.dragged.item, this.state.dragged.index, newIndex, this.state.list);
+      if (this.state.lock === 'vertical') {
+        if (distanceX >= this.constants.SWIPE_DISTANCE_THRESHOLD) {
+          this.onSwipeOut();
+        }
+      } else if (typeof this.props.callback === 'function') {
+        this.props.callback(event, this.state.dragged.item, this.state.dragged.index, newIndex, this.state.list);
+      }
     }
 
     this.setState({
