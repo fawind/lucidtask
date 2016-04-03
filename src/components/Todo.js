@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react';
-import './todo.css';
 
-const Todo = ({ text, color }) => (
+const Todo = ({ item }) => (
   <div
-    className="todo"
-    style={{ backgroundColor: color }}
+    className="content"
+    style={{ backgroundColor: item.color }}
   >
-      {text}
-    </div>
+    {item.text}
+  </div>
 );
 
 Todo.propTypes = {
-  text: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
 };
 
 export default Todo;

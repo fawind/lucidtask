@@ -37,6 +37,12 @@ const todos = (state = initialState, action) => {
       return state.filter(t => t.id !== action.id);
     case 'EDIT_TODO':
       return state.map(t => todo(t, action));
+    case 'MOVE_TODO': {
+      const newList = [...state];
+      const item = newList.splice(action.fromIndex, 1)[0];
+      newList.splice(action.toIndex, 0, item);
+      return newList;
+    }
     default:
       return state;
   }

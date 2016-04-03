@@ -104,4 +104,31 @@ describe('todos reducer', () => {
         { text: 'Second Update', completed: false, id: 2 },
       ]);
   });
+
+  it('should handle MOVE_TODO', () => {
+    const stateA = [
+      { text: 'First Todo', completed: false, id: 1 },
+      { text: 'Second Todo', completed: false, id: 2 },
+      { text: 'Third Todo', completed: false, id: 3 },
+    ];
+    deepFreeze(stateA);
+    expect(todos(stateA, actions.moveTodo(0, 1)))
+      .toEqual([
+        { text: 'Second Todo', completed: false, id: 2 },
+        { text: 'First Todo', completed: false, id: 1 },
+        { text: 'Third Todo', completed: false, id: 3 },
+      ]);
+    expect(todos(stateA, actions.moveTodo(0, 2)))
+      .toEqual([
+        { text: 'Second Todo', completed: false, id: 2 },
+        { text: 'Third Todo', completed: false, id: 3 },
+        { text: 'First Todo', completed: false, id: 1 },
+      ]);
+    expect(todos(stateA, actions.moveTodo(2, 0)))
+      .toEqual([
+        { text: 'Third Todo', completed: false, id: 3 },
+        { text: 'First Todo', completed: false, id: 1 },
+        { text: 'Second Todo', completed: false, id: 2 },
+      ]);
+  });
 });

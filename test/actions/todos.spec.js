@@ -35,4 +35,13 @@ describe('todo actions', () => {
         text: 'New Text',
       });
   });
+
+  it('moveTodo should create MOVE_TODO action', () => {
+    expect(actions.moveTodo(0, 2))
+      .toEqual({
+        type: 'MOVE_TODO',
+        fromIndex: 0,
+        toIndex: 2,
+      });
+  });
 });

@@ -2,5 +2,8 @@
     background-color: red;
     font-size: 2rem;
     width: 60%;
+}
+
+.content {
     padding: 1rem;
 }
