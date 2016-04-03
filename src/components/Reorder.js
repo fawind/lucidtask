@@ -1,6 +1,7 @@
 /*eslint-disable */
 /**
- * Modified React Reorder [github.com/JakeSidSmith/react-reorder]
+ * Modified React Reorder component
+ * github.com/JakeSidSmith/react-reorder
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -13,7 +14,8 @@ var Reorder = React.createClass({
     SCROLL_RATE: 1000 / 60,
     SCROLL_DISTANCE: 1,
     SCROLL_AREA: 50,
-    SCROLL_MULTIPLIER: 5
+    SCROLL_MULTIPLIER: 5,
+    LOCK_DISTANCE_THRESHOLD: 15
   },
   preventDefault: function (event) {
     event.preventDefault();
@@ -41,10 +43,14 @@ var Reorder = React.createClass({
     var self = this;
     var target = event.currentTarget;
     var rect = target.getBoundingClientRect();
+    var lock = this.props.lock;
+    if (this.props.lock === 'auto')
+      lock = null;
 
     this.setState({
       held: false,
-      moved: false
+      moved: false,
+      lock: lock
     });
 
     var dragOffset = {
@@ -160,6 +166,12 @@ var Reorder = React.createClass({
   getScrollArea: function (value) {
     return Math.max(Math.min(value / 4, this.constants.SCROLL_AREA), this.constants.SCROLL_AREA / 5);
   },
+  getDistanceX: function (pointerA, pointerB) {
+    return Math.abs(pointerA.clientX - pointerB.clientX);
+  },
+  getDistanceY: function (pointerA, pointerB) {
+    return Math.abs(pointerA.clientY - pointerB.clientY);
+  },
   dragScrollY: function () {
     var element = ReactDOM.findDOMNode(this);
     var rect = element.getBoundingClientRect();
@@ -191,7 +203,7 @@ var Reorder = React.createClass({
   handleDragScrollY: function (event) {
     var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
-    if (!this.scrollIntervalY && this.props.lock !== 'vertical') {
+    if (!this.scrollIntervalY && this.state.lock !== 'vertical') {
       if (event.clientY < rect.top + this.constants.SCROLL_AREA) {
         this.scrollIntervalY = setInterval(this.dragScrollY, this.constants.SCROLL_RATE);
       } else if (event.clientY > rect.bottom - this.constants.SCROLL_AREA) {
@@ -207,7 +219,7 @@ var Reorder = React.createClass({
   handleDragScrollX: function (event) {
     var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
 
-    if (!this.scrollIntervalX && this.props.lock !== 'horizontal') {
+    if (!this.scrollIntervalX && this.state.lock !== 'horizontal') {
       if (event.clientX < rect.left + this.constants.SCROLL_AREA) {
         this.scrollIntervalX = setInterval(this.dragScrollX, this.constants.SCROLL_RATE);
       } else if (event.clientX > rect.right - this.constants.SCROLL_AREA) {
@@ -237,6 +249,20 @@ var Reorder = React.createClass({
       movedALittle: true
     });
 
+    // Lock X or Y movement if threshold is reached
+    if (this.state.lock === null) {
+      var distanceX = this.getDistanceX(this.state.pointer, this.state.downPos);
+      var distanceY = this.getDistanceY(this.state.pointer, this.state.downPos);
+      if (distanceX >= this.constants.LOCK_DISTANCE_THRESHOLD ||
+        distanceY >= this.constants.LOCK_DISTANCE_THRESHOLD) {
+        if (distanceX > distanceY) {
+          this.state.lock = 'vertical';
+        } else {
+          this.state.lock = 'horizontal'
+        }
+      }
+    }
+
     if (this.state.held && this.state.dragged) {
       event.preventDefault();
       this.setDraggedPosition(event);
@@ -244,7 +270,8 @@ var Reorder = React.createClass({
       var listElements = this.nodesToArray(ReactDOM.findDOMNode(this).childNodes);
       var collision = this.findCollision(listElements, event);
 
-      if (collision) {
+      // MOD.: Don't reorder (horizontal) list when moving vertically
+      if (collision && this.state.lock !== 'vertical') {
         var previousIndex = listElements.indexOf(this.state.dragged.target);
         var newIndex = listElements.indexOf(collision);
 
@@ -307,10 +334,10 @@ var Reorder = React.createClass({
       height: this.state.draggedStyle.height
     };
 
-    if (this.props.lock === 'horizontal') {
+    if (this.state.lock === 'horizontal') {
       draggedStyle.top = event.clientY - this.state.dragOffset.top;
       draggedStyle.left = this.state.originalPosition.left;
-    } else if (this.props.lock === 'vertical') {
+    } else if (this.state.lock === 'vertical') {
       draggedStyle.top = this.state.originalPosition.top;
       draggedStyle.left = event.clientX - this.state.dragOffset.left;
     } else {
@@ -337,11 +364,11 @@ var Reorder = React.createClass({
       if (!this.nonCollisionElement.exec(listElements[i].className)) {
         var rect = listElements[i].getBoundingClientRect();
 
-        if (this.props.lock === 'horizontal') {
+        if (this.state.lock === 'horizontal') {
           if (this.yCollision(rect, event)) {
             return listElements[i];
           }
-        } else if (this.props.lock === 'vertical') {
+        } else if (this.state.lock === 'vertical') {
           if (this.xCollision(rect, event)) {
             return listElements[i];
           }

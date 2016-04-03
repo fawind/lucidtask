@@ -20,6 +20,7 @@ const TodoList = ({ todos, actions }) => {
   return (
     <Reorder
       itemKey="id"
+      lock="auto"
       holdTime="500"
       callback={reordered}
       itemClicked={itemClicked}
