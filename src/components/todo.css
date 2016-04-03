@@ -1,9 +1,14 @@
 .todo {
     background-color: red;
     font-size: 2rem;
-    width: 60%;
+    padding: 1rem
 }
 
-.content {
-    padding: 1rem;
+.todo input {
+    background-color: transparent;
+    border: 0px solid;
+    outline: none;
+    color: white;
+    font-size: 2rem;
+    width: 100%;
 }

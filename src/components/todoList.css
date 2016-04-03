@@ -4,3 +4,15 @@
     align-items:center;
     justify-content: center;
 }
+
+.todoContainer {
+    width: 60%;
+}
+
+.todoContainer.dragged {
+    opacity: 0.8;
+}
+
+.todoContainer.placeholder {
+    visibility: hidden;
+}
