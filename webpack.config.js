@@ -26,9 +26,8 @@ module.exports = {
         include: __dirname,
       },
       {
-        test: /\.css?$/,
-        loaders: ['style', 'raw'],
-        include: __dirname,
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
       },
     ],
   },
