@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import chroma from 'chroma-js';
 import Reorder from './Reorder';
 import Todo from './Todo';
+import SwipePlaceholder from './SwipePlaceholder';
 import './todoList.css';
 
 const colorScale = chroma.scale(['#F44336', '#FFD54F']);
@@ -23,13 +24,14 @@ const TodoList = ({ todos, actions }) => {
     <Reorder
       itemKey="id"
       lock="auto"
-      holdTime="500"
+      holdTime="100"
       callback={reordered}
       itemClicked={itemClicked}
       swipeLeft={swipeLeft}
       swipeRight={swipeRight}
       list={list}
       template={Todo}
+      placeholderTemplate={SwipePlaceholder}
       listClass="todoList"
       itemClass="todoContainer"
       sharedProps={{ editTodo: actions.editTodo }}

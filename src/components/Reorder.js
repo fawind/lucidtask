@@ -422,6 +422,9 @@ var Reorder = React.createClass({
     }
     return undefined;
   },
+  isPlaceholder: function (item) {
+    return this.state.held && this.state.dragged && this.state.dragged.item === item;
+  },
   getSelectedClass: function (item) {
     if (typeof this.props.selected !== 'undefined') {
       if (typeof this.props.selectedKey !== 'undefined') {
@@ -469,6 +472,9 @@ var Reorder = React.createClass({
     var list = this.state.list.map(function (item, index) {
       var itemKey = item[self.props.itemKey] || item;
       var itemClass = [self.props.itemClass, self.getPlaceholderClass(item), self.getSelectedClass(item)].join(' ');
+      if (self.isPlaceholder(item) && self.props.placeholderTemplate && self.state.lock === 'vertical') {
+        return React.createElement(self.props.placeholderTemplate, { key: itemKey });
+      }
       return React.createElement('div', {
         key: itemKey,
         className: itemClass,

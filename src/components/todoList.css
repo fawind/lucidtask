@@ -10,7 +10,7 @@
 }
 
 .todoContainer.dragged {
-    opacity: 0.8;
+    box-shadow: 0 6px 100px black;
 }
 
 .todoContainer.placeholder {
