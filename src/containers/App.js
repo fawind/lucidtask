@@ -3,15 +3,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TodoList from '../components/TodoList';
 import CompletedList from '../components/CompletedList';
+import Sidebar from '../components/Sidebar';
 import AddButton from '../components/AddButton';
-import * as TodoActions from '../actions';
+import * as TodoActions from '../actions/todos';
 import './app.css';
 
-const App = ({ todos, actions }) => {
+const App = ({ todos, lists, actions }) => {
   const openTodos = todos.filter(t => t.status === 'needsAction');
   const completedTodos = todos.filter(t => t.status === 'completed');
   return (
-    <div>
+    <div className="container">
       <TodoList
         todos={openTodos}
         actions={actions}
@@ -20,6 +21,7 @@ const App = ({ todos, actions }) => {
         todos={completedTodos}
         clearCompleted={actions.clearCompleted}
       />
+      <Sidebar lists={lists} fetchTodos={actions.fetchTodos} />
       <AddButton addTodo={actions.addTodo} />
     </div>
   );
@@ -27,11 +29,12 @@ const App = ({ todos, actions }) => {
 
 App.propTypes = {
   todos: PropTypes.array.isRequired,
+  lists: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-  return { todos: state.todos };
+  return { todos: state.todos, lists: state.lists };
 }
 
 function mapDispatchToProps(dispatch) {

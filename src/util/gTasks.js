@@ -40,40 +40,40 @@ const _executeRequest = (request) => (
   })
 );
 
-const getTasks = (taskList) => {
-  const body = { taskList };
+const getTasks = (tasklist) => {
+  const body = { tasklist };
   const request = gapi.client.tasks.tasks.list(body);
   return _executeRequest(request);
 };
 
-const addTask = (taskList, title, previousId = null) => {
-  const body = { taskList, title };
+const addTask = (tasklist, title, previousId = null) => {
+  const body = { tasklist, title };
   if (previousId) body.previous = previousId;
   const request = gapi.client.tasks.tasks.insert(body);
   return _executeRequest(request);
 };
 
-const deleteTask = (taskList, taskId) => {
-  const body = { taskList, task: taskId };
+const deleteTask = (tasklist, taskId) => {
+  const body = { tasklist, task: taskId };
   const request = gapi.client.tasks.tasks.delete(body);
   return _executeRequest(request);
 };
 
-const updateTask = (taskList, task) => {
-  const body = { taskList, status, task: task.id, id: task.id, title: task.title };
+const updateTask = (tasklist, task) => {
+  const body = { tasklist, status, task: task.id, id: task.id, title: task.title };
   const request = gapi.client.tasks.tasks.update(body);
   return _executeRequest(request);
 };
 
-const moveTask = (taskList, taskId, previousId = null) => {
-  const body = { taskList, task: taskId };
+const moveTask = (tasklist, taskId, previousId = null) => {
+  const body = { tasklist, task: taskId };
   if (previousId) body.previous = previousId;
   const request = gapi.client.tasks.tasks.move(body);
   return _executeRequest(request);
 };
 
-const clearTasks = (taskList) => {
-  const body = { taskList };
+const clearTasks = (tasklist) => {
+  const body = { tasklist };
   const request = gapi.client.tasks.tasks.clear(body);
   return _executeRequest(request);
 };
@@ -89,9 +89,9 @@ const addList = (title) => {
   return _executeRequest(request);
 };
 
-const deleteList = (taskList) => {
-  const body = { taskList };
-  const request = gapi.client.tasks.taskLists.delete(body);
+const deleteList = (tasklist) => {
+  const body = { tasklist };
+  const request = gapi.client.tasks.tasklists.delete(body);
   return _executeRequest(request);
 };
 

@@ -3,7 +3,6 @@ import './addButton.css';
 
 const AddButton = ({ addTodo }) => {
   const _addTodo = addTodo.bind(this, 'NewTodo');
-
   return (
     <a
       className="fab"

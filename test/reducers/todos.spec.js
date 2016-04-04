@@ -1,7 +1,7 @@
 import expect from 'expect';
 import deepFreeze from 'deep-freeze';
 import todos from '../../src/reducers/todos';
-import * as actions from '../../src/actions';
+import * as actions from '../../src/actions/todos';
 
 describe('todos reducer', () => {
   it('should handle initial state', () => {

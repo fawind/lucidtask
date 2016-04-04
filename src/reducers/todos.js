@@ -20,20 +20,12 @@ const todo = (state, action) => {
   }
 };
 
-const initialState = [
-  { id: '1', title: 'Test toDo', status: 'needsAction' },
-  { id: '2', title: 'Finish App', status: 'needsAction' },
-  { id: '3', title: 'Style this shit', status: 'needsAction' },
-  { id: '4', title: 'lowb', status: 'needsAction' },
-];
-
 const todos = (state = [], action) => {
   switch (action.type) {
+    case 'GET_TODOS':
+      return action.todos;
     case 'ADD_TODO':
-      return [
-        ...state,
-        todo(undefined, action),
-      ];
+      return [...state, todo(undefined, action)];
     case 'TOGGLE_TODO':
       return state.map(t => todo(t, action));
     case 'DELETE_TODO':
@@ -46,9 +38,8 @@ const todos = (state = [], action) => {
       newList.splice(action.toIndex, 0, item);
       return newList;
     }
-    case 'CLEAR_COMPLETED': {
+    case 'CLEAR_COMPLETED':
       return state.filter(t => t.status !== 'completed');
-    }
     default:
       return state;
   }

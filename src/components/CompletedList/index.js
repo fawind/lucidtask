@@ -20,7 +20,7 @@ const CompletedList = ({ todos, clearCompleted }) => {
 CompletedList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    completed: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   })).isRequired,
   clearCompleted: PropTypes.func.isRequired,
