@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "lint": "./node_modules/eslint/bin/eslint.js src",
-    "test": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel-register --require ./test/setup.js",
-    "lint-test": "npm run lint && npm test"
+    "test-only": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel-register --require ./test/setup.js",
+    "test": "npm run lint && npm run test-only"
   },
   "repository": {
     "type": "git",

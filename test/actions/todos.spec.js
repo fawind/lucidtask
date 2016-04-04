@@ -44,4 +44,9 @@ describe('todo actions', () => {
         toIndex: 2,
       });
   });
+
+  it('clearCompleted should create CLEAR_COMPLETED action', () => {
+    expect(actions.clearCompleted())
+      .toEqual({ type: 'CLEAR_COMPLETED' });
+  });
 });

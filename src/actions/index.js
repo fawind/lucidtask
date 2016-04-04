@@ -27,3 +27,7 @@ export const moveTodo = (fromIndex, toIndex) => ({
   fromIndex,
   toIndex,
 });
+
+export const clearCompleted = () => ({
+  type: 'CLEAR_COMPLETED',
+});

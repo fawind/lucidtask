@@ -131,4 +131,36 @@ describe('todos reducer', () => {
         { text: 'Second Todo', completed: false, id: 2 },
       ]);
   });
+
+  it('should handle CLEAR_TODO', () => {
+    const stateA = [
+      { text: 'First Todo', completed: true, id: 1 },
+      { text: 'Second Todo', completed: false, id: 2 },
+      { text: 'Third Todo', completed: true, id: 3 },
+      { text: 'Another Task', completed: true, id: 4 },
+    ];
+    deepFreeze(stateA);
+    expect(todos(stateA, actions.clearCompleted()))
+      .toEqual([
+        { text: 'Second Todo', completed: false, id: 2 },
+      ]);
+
+    const stateB = [
+      { text: 'First Todo', completed: true, id: 1 },
+      { text: 'Second Todo', completed: true, id: 2 },
+      { text: 'Third Todo', completed: true, id: 3 },
+    ];
+    deepFreeze(stateB);
+    expect(todos(stateB, actions.clearCompleted()))
+      .toEqual([]);
+
+    const stateC = [
+      { text: 'First Todo', completed: false, id: 1 },
+      { text: 'Second Todo', completed: false, id: 2 },
+      { text: 'Third Todo', completed: false, id: 3 },
+    ];
+    deepFreeze(stateC);
+    expect(todos(stateC, actions.clearCompleted()))
+      .toEqual(stateC);
+  });
 });

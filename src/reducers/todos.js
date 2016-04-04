@@ -43,6 +43,9 @@ const todos = (state = initialState, action) => {
       newList.splice(action.toIndex, 0, item);
       return newList;
     }
+    case 'CLEAR_COMPLETED': {
+      return state.filter(t => !t.completed);
+    }
     default:
       return state;
   }

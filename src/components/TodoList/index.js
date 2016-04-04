@@ -7,23 +7,29 @@ import './todoList.css';
 
 const colorScale = chroma.scale(['#F44336', '#FFD54F']);
 
+const getColor = (index, total) => {
+  if (total <= 4) return colorScale(index / 4).hex();
+  return colorScale(index / (total - 1)).hex();
+};
+
 const TodoList = ({ todos, actions }) => {
   const list = todos.map((todo, index) => (
     Object.assign({}, todo,
-      { color: colorScale(index / (todos.length - 1)).hex(), edit: false })
+      { color: getColor(index, todos.length), edit: false })
   ));
-  const reordered = (ev, item, from, to) => actions.moveTodo(from, to);
-  const itemClicked = (ev, item) => {
+  const reordered = (e, item, from, to) => actions.moveTodo(from, to);
+  const itemClicked = (e, item) => {
     const _item = item;
     _item.edit = true;
   };
-  const swipeLeft = () => console.log('Swipe left');
-  const swipeRight = () => console.log('Swipe right');
+  const swipeLeft = (e, item) => actions.deleteTodo(item.id);
+  const swipeRight = (e, item) => actions.toggleTodo(item.id);
 
   return (
     <Reorder
       itemKey="id"
       lock="auto"
+      holdTime="100"
       callback={reordered}
       itemClicked={itemClicked}
       swipeLeft={swipeLeft}
