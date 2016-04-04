@@ -10,7 +10,7 @@ const CompletedList = ({ todos, clearCompleted }) => {
     >
       <div className="todoContainer">
         {todos.map(todo =>
-          <div key={todo.id} className="todo completed">{todo.text}</div>
+          <div key={todo.id} className="todo completed">{todo.title}</div>
         )}
       </div>
     </div>
@@ -19,9 +19,9 @@ const CompletedList = ({ todos, clearCompleted }) => {
 
 CompletedList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    completed: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    completed: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
   })).isRequired,
   clearCompleted: PropTypes.func.isRequired,
 };

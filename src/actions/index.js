@@ -1,9 +1,9 @@
-let nextTodoId = 10;
+let nextTodoId = 0;
 
-export const addTodo = (text) => ({
+export const addTodo = (title) => ({
   type: 'ADD_TODO',
-  id: nextTodoId++,
-  text,
+  id: (nextTodoId++).toString(),
+  title,
 });
 
 export const toggleTodo = (id) => ({
@@ -16,10 +16,10 @@ export const deleteTodo = (id) => ({
   id,
 });
 
-export const editTodo = (id, text) => ({
+export const editTodo = (id, title) => ({
   type: 'EDIT_TODO',
   id,
-  text,
+  title,
 });
 
 export const moveTodo = (fromIndex, toIndex) => ({

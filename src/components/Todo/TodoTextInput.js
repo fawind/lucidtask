@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 class TodoTextInput extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { text: this.props.item.text };
+    this.state = { title: this.props.item.title };
     this._handleChange = this._handleChange.bind(this);
     this._handleKeyDown = this._handleKeyDown.bind(this);
     this._submitText = this._submitText.bind(this);
@@ -15,7 +15,7 @@ class TodoTextInput extends Component {
   }
 
   _handleChange(e) {
-    this.setState({ text: e.target.value });
+    this.setState({ title: e.target.value });
   }
 
   _handleKeyDown(e) {
@@ -23,13 +23,12 @@ class TodoTextInput extends Component {
   }
 
   _submitText() {
-    if (this.state.text === this.props.item.text) {
+    if (this.state.title === this.props.item.title) {
       ReactDOM.findDOMNode(this.refs.input).blur();
       this.props.item.edit = false;
       return;
     }
-    console.log('Update new text:', this.state.text);
-    this.props.editTodo(this.props.item.id, this.state.text);
+    this.props.editTodo(this.props.item.id, this.state.title);
   }
 
   render() {
@@ -41,7 +40,7 @@ class TodoTextInput extends Component {
         <input
           ref="input"
           type="text"
-          value={this.state.text}
+          value={this.state.title}
           onChange={this._handleChange}
           onBlur={this._submitText}
           onKeyDown={this._handleKeyDown}

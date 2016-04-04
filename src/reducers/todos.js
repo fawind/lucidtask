@@ -3,28 +3,31 @@ const todo = (state, action) => {
     case 'ADD_TODO':
       return {
         id: action.id,
-        text: action.text,
-        completed: false,
+        title: action.title,
+        status: 'needsAction',
       };
     case 'TOGGLE_TODO':
       if (state.id !== action.id) return state;
-      return Object.assign({}, state, { completed: !state.completed });
+      if (state.status === 'completed') {
+        return Object.assign({}, state, { status: 'needsAction' });
+      }
+      return Object.assign({}, state, { status: 'completed' });
     case 'EDIT_TODO':
       if (state.id !== action.id) return state;
-      return Object.assign({}, state, { text: action.text });
+      return Object.assign({}, state, { title: action.title });
     default:
       return state;
   }
 };
 
 const initialState = [
-  { id: 1, text: 'Test toDo', completed: false },
-  { id: 2, text: 'Finish App', completed: false },
-  { id: 3, text: 'Style this shit', completed: false },
-  { id: 4, text: 'lowb', completed: false },
+  { id: '1', title: 'Test toDo', status: 'needsAction' },
+  { id: '2', title: 'Finish App', status: 'needsAction' },
+  { id: '3', title: 'Style this shit', status: 'needsAction' },
+  { id: '4', title: 'lowb', status: 'needsAction' },
 ];
 
-const todos = (state = initialState, action) => {
+const todos = (state = [], action) => {
   switch (action.type) {
     case 'ADD_TODO':
       return [
@@ -44,7 +47,7 @@ const todos = (state = initialState, action) => {
       return newList;
     }
     case 'CLEAR_COMPLETED': {
-      return state.filter(t => !t.completed);
+      return state.filter(t => t.status !== 'completed');
     }
     default:
       return state;

@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 
-const TodoNoTextInput = ({ text, color }) => (
+const TodoNoTextInput = ({ title, color }) => (
   <div
     className="todo content"
     style={{ backgroundColor: color }}
   >
-    {text}
+    {title}
   </div>
 );
 
 TodoNoTextInput.propTypes = {
-  text: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
 };
 

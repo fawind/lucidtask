@@ -6,8 +6,8 @@ describe('todo actions', () => {
     expect(actions.addTodo('New Todo'))
       .toEqual({
         type: 'ADD_TODO',
-        id: 0,
-        text: 'New Todo',
+        id: '0',
+        title: 'New Todo',
       });
   });
 
@@ -15,7 +15,7 @@ describe('todo actions', () => {
     expect(actions.toggleTodo(1))
       .toEqual({
         type: 'TOGGLE_TODO',
-        id: 1,
+        id: '1',
       });
   });
 
@@ -23,7 +23,7 @@ describe('todo actions', () => {
     expect(actions.deleteTodo(1))
       .toEqual({
         type: 'DELETE_TODO',
-        id: 1,
+        id: '1',
       });
   });
 
@@ -31,8 +31,8 @@ describe('todo actions', () => {
     expect(actions.editTodo(1, 'New Text'))
       .toEqual({
         type: 'EDIT_TODO',
-        id: 1,
-        text: 'New Text',
+        id: '1',
+        title: 'New Text',
       });
   });
 

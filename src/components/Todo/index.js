@@ -5,7 +5,7 @@ import './todo.css';
 
 const Todo = ({ item, sharedProps }) => {
   if (!item.edit) {
-    return <TodoNoTextInput text={item.text} color={item.color} />;
+    return <TodoNoTextInput title={item.title} color={item.color} />;
   }
   return <TodoTextInput item={item} editTodo={sharedProps.editTodo} />;
 };

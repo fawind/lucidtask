@@ -29,7 +29,7 @@ const TodoList = ({ todos, actions }) => {
     <Reorder
       itemKey="id"
       lock="auto"
-      holdTime="100"
+      holdTime="200"
       callback={reordered}
       itemClicked={itemClicked}
       swipeLeft={swipeLeft}
@@ -45,8 +45,9 @@ const TodoList = ({ todos, actions }) => {
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
   })),
   actions: PropTypes.object.isRequired,
 };

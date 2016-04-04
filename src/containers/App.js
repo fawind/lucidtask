@@ -8,8 +8,8 @@ import * as TodoActions from '../actions';
 import './app.css';
 
 const App = ({ todos, actions }) => {
-  const openTodos = todos.filter(todo => !todo.completed);
-  const completedTodos = todos.filter(todo => todo.completed);
+  const openTodos = todos.filter(t => t.status === 'needsAction');
+  const completedTodos = todos.filter(t => t.status === 'completed');
   return (
     <div>
       <TodoList
