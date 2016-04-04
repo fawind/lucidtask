@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
-import TodoDrag from './TodoDrag';
+import TodoNoTextInput from './TodoNoTextInput';
 import TodoTextInput from './TodoTextInput';
 import './todo.css';
 
 const Todo = ({ item, sharedProps }) => {
   if (!item.edit) {
-    return <TodoDrag text={item.text} color={item.color} />;
+    return <TodoNoTextInput text={item.text} color={item.color} />;
   }
   return <TodoTextInput item={item} editTodo={sharedProps.editTodo} />;
 };
