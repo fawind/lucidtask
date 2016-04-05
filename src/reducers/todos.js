@@ -1,5 +1,8 @@
 const todo = (state, action) => {
   switch (action.type) {
+    case 'UPDATE_ID':
+      if (state.id !== action.oldId) return state;
+      return Object.assign({}, state, { id: action.newId });
     case 'ADD_TODO':
       return {
         id: action.id,
@@ -24,6 +27,8 @@ const todos = (state = [], action) => {
   switch (action.type) {
     case 'GET_TODOS':
       return action.todos;
+    case 'UPDATE_ID':
+      return state.map(t => todo(t, action));
     case 'ADD_TODO':
       return [...state, todo(undefined, action)];
     case 'TOGGLE_TODO':
@@ -34,12 +39,18 @@ const todos = (state = [], action) => {
       return state.map(t => todo(t, action));
     case 'MOVE_TODO': {
       const newList = [...state];
-      const item = newList.splice(action.fromIndex, 1)[0];
-      newList.splice(action.toIndex, 0, item);
+      const fromIndex = state.findIndex(t => t.id === action.id);
+      const toIndex = state.findIndex(t => t.id === action.newPreviousId);
+      console.log(fromIndex, toIndex);
+      const item = newList.splice(fromIndex, 1)[0];
+      newList.splice(toIndex, 0, item);
       return newList;
     }
     case 'CLEAR_COMPLETED':
       return state.filter(t => t.status !== 'completed');
+    case 'API_ERROR':
+      console.log(action);
+      return state;
     default:
       return state;
   }

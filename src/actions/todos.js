@@ -2,6 +2,13 @@ import gTasks from '../util/gTasks';
 
 let nextTodoId = 0;
 
+const getCurrentList = (lists) => lists.filter(l => l.active)[0];
+const getTodo = (todos, id) => todos.filter(t => t.id === id)[0];
+const getLastTodoId = (todos) => {
+  if (todos.length === 0) return null;
+  return todos[todos.length - 1].id;
+};
+
 export const apiError = (error, oldState) => ({
   type: 'API_ERROR',
   error,
@@ -19,44 +26,71 @@ export const getLists = (lists) => ({
   lists,
 });
 
-export const addTodo = (title) => ({
-  type: 'ADD_TODO',
-  id: (nextTodoId++).toString(),
-  title,
+export const updateId = (oldId, newId) => ({
+  type: 'UPDATE_ID',
+  oldId,
+  newId,
 });
 
-export const toggleTodo = (id) => ({
-  type: 'TOGGLE_TODO',
-  id,
-});
+export const addTodo = (title) => (dispatch, getState) => {
+  const state = getState();
+  const list = getCurrentList(state.lists);
+  const lastTodoId = getLastTodoId(state.todos);
+  const tempId = (nextTodoId++).toString();
+  dispatch({ type: 'ADD_TODO', id: tempId, title });
+  gTasks.addTask(list.id, title, lastTodoId)
+    .then(res => dispatch({ type: 'UPDATE_ID', oldId: tempId, newId: res.id }))
+    .catch(error => dispatch(apiError(error, state)));
+};
 
-export const deleteTodo = (id) => ({
-  type: 'DELETE_TODO',
-  id,
-});
+export const toggleTodo = (id) => (dispatch, getState) => {
+  const state = getState();
+  dispatch({ type: 'TOGGLE_TODO', id });
+  const newState = getState();
+  const list = getCurrentList(newState.lists);
+  const todo = getTodo(newState.todos, id);
+  gTasks.updateTask(list.id, todo)
+    .catch(error => dispatch(apiError(error, state)));
+};
 
-export const editTodo = (id, title) => ({
-  type: 'EDIT_TODO',
-  id,
-  title,
-});
+export const deleteTodo = (id) => (dispatch, getState) => {
+  const state = getState();
+  const list = getCurrentList(state.lists);
+  dispatch({ type: 'DELETE_TODO', id });
+  gTasks.deleteTask(list.id, id)
+    .catch(error => dispatch(apiError(error, state)));
+};
 
-export const moveTodo = (fromIndex, toIndex) => ({
-  type: 'MOVE_TODO',
-  fromIndex,
-  toIndex,
-});
+export const editTodo = (id, title) => (dispatch, getState) => {
+  const state = getState();
+  dispatch({ type: 'EDIT_TODO', id, title });
+  const newState = getState();
+  const list = getCurrentList(newState.lists);
+  const todo = getTodo(newState.todos, id);
+  gTasks.updateTask(list.id, todo)
+    .catch(error => dispatch(apiError(error, state)));
+};
 
-export const clearCompleted = () => ({
-  type: 'CLEAR_COMPLETED',
-});
+export const moveTodo = (id, newPreviousId) => (dispatch, getState) => {
+  const state = getState();
+  const list = getCurrentList(state.lists);
+  dispatch({ type: 'MOVE_TODO', id, newPreviousId });
+  gTasks.moveTask(list.id, id, newPreviousId)
+    .catch(error => dispatch(apiError(error, state)));
+};
+
+export const clearCompleted = () => (dispatch, getState) => {
+  const state = getState();
+  const list = getCurrentList(state.lists);
+  dispatch({ type: 'CLEAR_COMPLETED' });
+  gTasks.clearTasks(list.id)
+    .catch(error => dispatch(apiError(error, state)));
+};
 
 export const fetchTodos = (list) => dispatch => (
   gTasks.getTasks(list)
-    .then(
-      res => dispatch(getTodos(list, res.items)),
-      err => dispatch(apiError(err))
-   )
+    .then(res => dispatch(getTodos(list, res.items)))
+    .catch(error => dispatch(apiError(error, null)))
 );
 
 export const initTasks = () => dispatch => {
@@ -65,7 +99,6 @@ export const initTasks = () => dispatch => {
       dispatch(getLists(res.items));
       if (res.items.length > 0) {
         dispatch(fetchTodos(res.items[0].id));
-        return;
       }
     });
 };

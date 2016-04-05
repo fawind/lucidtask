@@ -17,7 +17,10 @@ const TodoList = ({ todos, actions }) => {
     Object.assign({}, todo,
       { color: getColor(index, todos.length), edit: false })
   ));
-  const reordered = (e, item, from, to) => actions.moveTodo(from, to);
+  const reordered = (e, item, from, to) => {
+    const previousTodoId = todos[to].id;
+    actions.moveTodo(item.id, previousTodoId);
+  };
   const itemClicked = (e, item) => {
     const _item = item;
     _item.edit = true;

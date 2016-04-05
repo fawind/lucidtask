@@ -60,7 +60,7 @@ const deleteTask = (tasklist, taskId) => {
 };
 
 const updateTask = (tasklist, task) => {
-  const body = { tasklist, status, task: task.id, id: task.id, title: task.title };
+  const body = { tasklist, task: task.id, id: task.id, title: task.title, status: task.status };
   const request = gapi.client.tasks.tasks.update(body);
   return _executeRequest(request);
 };
