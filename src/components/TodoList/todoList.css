@@ -9,6 +9,12 @@
     width: 60%;
 }
 
+@media (max-width: 978px) {
+    .todoContainer {
+        width: 100%;
+    }
+}
+
 .todoContainer.dragged {
     box-shadow: 0 6px 100px black;
 }
