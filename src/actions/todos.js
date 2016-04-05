@@ -89,9 +89,32 @@ export const clearCompleted = () => (dispatch, getState) => {
 
 export const fetchTodos = (list) => dispatch => (
   gTasks.getTasks(list)
-    .then(res => dispatch(getTodos(list, res.items)))
+    .then(res => {
+      let items = [];
+      if (res.hasOwnProperty('items')) items = res.items;
+      dispatch(getTodos(list, items));
+    })
     .catch(error => dispatch(apiError(error, null)))
 );
+
+export const addList = (title) => (dispatch) => {
+  gTasks.addList(title)
+    .then(res => {
+      dispatch({ type: 'ADD_LIST', title, id: res.id });
+      dispatch(fetchTodos(res.id));
+    })
+    .catch(error => dispatch(apiError(error, null)));
+};
+
+export const deleteList = (id) => (dispatch, getState) => {
+  gTasks.deleteList(id)
+    .then(() => {
+      dispatch({ type: 'DELETE_LIST', id });
+      const state = getState();
+      dispatch(fetchTodos(state.lists[0].id));
+    })
+    .catch(error => dispatch(apiError(error, null)));
+};
 
 export const initTasks = () => dispatch => {
   gTasks.getLists()

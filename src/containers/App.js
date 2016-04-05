@@ -21,7 +21,12 @@ const App = ({ todos, lists, actions }) => {
         todos={completedTodos}
         clearCompleted={actions.clearCompleted}
       />
-      <Sidebar lists={lists} fetchTodos={actions.fetchTodos} />
+      <Sidebar
+        lists={lists}
+        fetchTodos={actions.fetchTodos}
+        deleteList={actions.deleteList}
+        addList={actions.addList}
+      />
       <AddButton addTodo={actions.addTodo} />
     </div>
   );

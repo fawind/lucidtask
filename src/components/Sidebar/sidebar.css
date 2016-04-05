@@ -20,6 +20,7 @@
 
 .sidebar a:hover {
     background-color: #546E7A;
+    cursor: pointer;
 }
 
 .sidebar #active {

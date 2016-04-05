@@ -16,6 +16,13 @@ const lists = (state = [], action) => {
       return action.lists;
     case 'GET_TODOS':
       return state.map(l => list(l, action));
+    case 'ADD_LIST':
+      return [
+        ...state,
+        { id: action.id, title: action.title, active: false },
+      ];
+    case 'DELETE_LIST':
+      return state.filter(l => l.id !== action.id);
     default:
       return state;
   }
