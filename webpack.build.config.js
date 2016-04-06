@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -8,10 +8,15 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'static/bundle.js',
+    filename: 'public/static/bundle.js',
     publicPath: '/static/',
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: './app.yaml', to: 'app.yaml' },
+      { from: './src/index.html', to: 'public/' },
+      { from: './src/favicon.png', to: 'public/' },
+    ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"',
     }),

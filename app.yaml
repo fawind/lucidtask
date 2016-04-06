@@ -27,6 +27,10 @@ handlers:
   upload: public/(.*\.json)
   expiration: "1h"
 
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  static_files: public/\1
+  upload: public/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+
 # index files
 - url: /(.+)/
   static_files: public/\1/index.html
