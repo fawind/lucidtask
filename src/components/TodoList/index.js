@@ -8,7 +8,7 @@ import './todoList.css';
 const colorScale = chroma.scale(['#F44336', '#FFD54F']);
 
 const getColor = (index, total) => {
-  if (total <= 4) return colorScale(index / 4).hex();
+  if (total <= 2) return colorScale(index / 2).hex();
   return colorScale(index / (total - 1)).hex();
 };
 

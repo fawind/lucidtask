@@ -41,7 +41,6 @@ const todos = (state = [], action) => {
       const newList = [...state];
       const fromIndex = state.findIndex(t => t.id === action.id);
       const toIndex = state.findIndex(t => t.id === action.newPreviousId);
-      console.log(fromIndex, toIndex);
       const item = newList.splice(fromIndex, 1)[0];
       newList.splice(toIndex, 0, item);
       return newList;
@@ -50,7 +49,7 @@ const todos = (state = [], action) => {
       return state.filter(t => t.status !== 'completed');
     case 'API_ERROR':
       console.log(action);
-      return state;
+      return action.oldState.todos;
     default:
       return state;
   }

@@ -23,6 +23,7 @@ var Reorder = React.createClass({
   },
   handleTouchEvents: function (event) {
     if (event.touches && event.touches.length) {
+      this.setState({ touch: true });
       event.clientX = event.touches[0].clientX;
       event.clientY = event.touches[0].clientY;
     }
@@ -472,7 +473,7 @@ var Reorder = React.createClass({
     var list = this.state.list.map(function (item, index) {
       var itemKey = item[self.props.itemKey] || item;
       var itemClass = [self.props.itemClass, self.getPlaceholderClass(item), self.getSelectedClass(item)].join(' ');
-      if (self.isPlaceholder(item) && self.props.placeholderTemplate && self.state.lock === 'vertical') {
+      if (!self.state.touch && self.isPlaceholder(item) && self.props.placeholderTemplate && self.state.lock === 'vertical') {
         return React.createElement(self.props.placeholderTemplate, { key: itemKey });
       }
       return React.createElement('div', {
