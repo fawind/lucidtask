@@ -1,0 +1,31 @@
+.fab {
+    position: relative;
+    display: inline-block;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    color: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.2s;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.fab i {
+    width: inherit;
+    display: inline-block;
+    text-align: center;
+    line-height: 55.5px;
+}
+
+.fab:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+#addButton {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #d23f31;
+}

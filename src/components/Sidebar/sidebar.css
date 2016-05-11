@@ -1,0 +1,29 @@
+.sidebar {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: 4rem;
+    height: 100%;
+    background: #37474F;
+    text-align: center;
+}
+
+.sidebar a {
+    display: inline-block;
+    width: 40%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #455A64;
+    border-style: solid;
+    border-color: #455A64;
+}
+
+.sidebar a:hover {
+    background-color: #546E7A;
+    cursor: pointer;
+}
+
+.sidebar #active {
+    color: #37474F;
+    background-color: #455A64
+}

@@ -1,0 +1,14 @@
+.todo {
+    background-color: #263238;
+    font-size: 2rem;
+    padding: 1rem
+}
+
+.todo input {
+    background-color: transparent;
+    border: 0px solid;
+    outline: none;
+    color: white;
+    font-size: 2rem;
+    width: 100%;
+}

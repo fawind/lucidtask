@@ -27,23 +27,6 @@ handlers:
   upload: public/(.*\.json)
   expiration: "1h"
 
-- url: /(.*\.map)
-  mime_type: application/json
-  static_files: public/\1
-  upload: public/(.*\.map)
-
-# fonts
-- url: /(.*\.ttf)
-  mime_type: font/truetype
-  static_files: public/\1
-  upload: public/(.*\.ttf)
-
-- url: /(.*\.(woff|woff2))
-  mime_type: application/x-font-woff
-  static_files: public/\1
-  upload: public/(.*\.(woff|woff2))
-
-# image files
 - url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
   static_files: public/\1
   upload: public/(.*\.(bmp|gif|ico|jpeg|jpg|png))
