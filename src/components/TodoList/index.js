@@ -12,21 +12,25 @@ const getColor = (index, total) => {
   return colorScale(index / (total - 1)).hex();
 };
 
-const TodoList = ({ todos, actions }) => {
-  const list = todos.map((todo, index) => (
-    Object.assign({}, todo,
-      { color: getColor(index, todos.length), edit: false })
+const TodoList = ({ tasks, actions }) => {
+  const list = tasks.map((task, index) => (
+    Object.assign({}, task,
+      { color: getColor(index, tasks.length), edit: false })
   ));
+
   const reordered = (e, item, from, to) => {
-    const previousTodoId = todos[to].id;
-    actions.moveTodo(item.id, previousTodoId);
+    const previousTaskId = tasks[to].id;
+    actions.moveTask(item.id, previousTaskId);
   };
+
   const itemClicked = (e, item) => {
     const _item = item;
     _item.edit = true;
   };
-  const swipeLeft = (e, item) => actions.deleteTodo(item.id);
-  const swipeRight = (e, item) => actions.toggleTodo(item.id);
+
+  const swipeLeft = (e, item) => actions.deleteTask(item.id);
+
+  const swipeRight = (e, item) => actions.toggleTask(item.id);
 
   return (
     <Reorder
@@ -42,12 +46,12 @@ const TodoList = ({ todos, actions }) => {
       placeholderTemplate={SwipePlaceholder}
       listClass="todoList"
       itemClass="todoContainer"
-      sharedProps={{ editTodo: actions.editTodo }}
+      sharedProps={{ editTodo: actions.editTask }}
     />);
 };
 
 TodoList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({
+  tasks: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,

@@ -5,45 +5,47 @@ import TodoList from '../components/TodoList';
 import CompletedList from '../components/CompletedList';
 import Sidebar from '../components/Sidebar';
 import AddButton from '../components/AddButton';
-import * as TodoActions from '../actions/todos';
+import * as taskActions from '../actions/tasksAsync';
 import './app.css';
 
-const App = ({ todos, lists, actions }) => {
-  const openTodos = todos.filter(t => t.status === 'needsAction');
-  const completedTodos = todos.filter(t => t.status === 'completed');
+const App = ({ activeTasklist, tasklists, actions }) => {
+  const openTasks = activeTasklist.tasks.filter(t => t.status === 'needsAction');
+  const completedTasks = activeTasklist.tasks.filter(t => t.status === 'completed');
   return (
     <div className="container">
       <TodoList
-        todos={openTodos}
+        tasks={openTasks}
         actions={actions}
       />
       <CompletedList
-        todos={completedTodos}
+        tasks={completedTasks}
         clearCompleted={actions.clearCompleted}
       />
       <Sidebar
-        lists={lists}
-        fetchTodos={actions.fetchTodos}
-        deleteList={actions.deleteList}
-        addList={actions.addList}
+        tasklists={tasklists}
+        activeListId={activeTasklist.id}
+        actions={actions}
       />
-      <AddButton addTodo={actions.addTodo} />
+      <AddButton addTask={actions.addTask} />
     </div>
   );
 };
 
 App.propTypes = {
-  todos: PropTypes.array.isRequired,
-  lists: PropTypes.array.isRequired,
+  activeTasklist: PropTypes.object.isRequired,
+  tasklists: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-  return { todos: state.todos, lists: state.lists };
+  return {
+    activeTasklist: state.activeTasklist,
+    tasklists: state.tasklists,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(TodoActions, dispatch) };
+  return { actions: bindActionCreators(taskActions, dispatch) };
 }
 
 export default connect(

@@ -1,43 +1,41 @@
-const todo = (state, action) => {
+import initialState from '../sampleData';
+
+const task = (state, action) => {
   switch (action.type) {
-    case 'UPDATE_ID':
-      if (state.id !== action.oldId) return state;
-      return Object.assign({}, state, { id: action.newId });
-    case 'ADD_TODO':
+    case 'ADD_TASK':
       return {
         id: action.id,
         title: action.title,
         status: 'needsAction',
       };
-    case 'TOGGLE_TODO':
+    case 'TOGGLE_TASK':
       if (state.id !== action.id) return state;
       if (state.status === 'completed') {
         return Object.assign({}, state, { status: 'needsAction' });
       }
       return Object.assign({}, state, { status: 'completed' });
-    case 'EDIT_TODO':
+    case 'EDIT_TASK':
       if (state.id !== action.id) return state;
       return Object.assign({}, state, { title: action.title });
+    case 'UPDATE_TASK_ID':
+      if (state.id !== action.oldId) return state;
+      return Object.assign({}, state, { id: action.newId });
     default:
       return state;
   }
 };
 
-const todos = (state = [], action) => {
+const tasks = (state, action) => {
   switch (action.type) {
-    case 'GET_TODOS':
-      return action.todos;
-    case 'UPDATE_ID':
-      return state.map(t => todo(t, action));
-    case 'ADD_TODO':
-      return [...state, todo(undefined, action)];
-    case 'TOGGLE_TODO':
-      return state.map(t => todo(t, action));
-    case 'DELETE_TODO':
+    case 'ADD_TASK':
+      return [...state, task(undefined, action)];
+    case 'TOGGLE_TASK':
+      return state.map(t => task(t, action));
+    case 'DELETE_TASK':
       return state.filter(t => t.id !== action.id);
-    case 'EDIT_TODO':
-      return state.map(t => todo(t, action));
-    case 'MOVE_TODO': {
+    case 'EDIT_TASK':
+      return state.map(t => task(t, action));
+    case 'MOVE_TASK': {
       const newList = [...state];
       const fromIndex = state.findIndex(t => t.id === action.id);
       const toIndex = state.findIndex(t => t.id === action.newPreviousId);
@@ -45,14 +43,22 @@ const todos = (state = [], action) => {
       newList.splice(toIndex, 0, item);
       return newList;
     }
+    case 'UPDATE_TASK_ID':
+      return state.map(t => task(t, action));
     case 'CLEAR_COMPLETED':
       return state.filter(t => t.status !== 'completed');
-    case 'API_ERROR':
-      console.log(action);
-      return action.oldState.todos;
     default:
       return state;
   }
 };
 
-export default todos;
+const activeTasklist = (state = { id: '-1', tasks: [] }, action) => {
+  switch (action.type) {
+    case 'SWITCH_LIST':
+      return { id: action.listId, tasks: action.tasks };
+    default:
+      return Object.assign({}, state, { tasks: tasks(state.tasks, action) });
+  }
+};
+
+export default activeTasklist;

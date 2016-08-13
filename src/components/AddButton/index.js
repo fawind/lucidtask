@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import './addButton.css';
 
-const AddButton = ({ addTodo }) => {
-  const _addTodo = addTodo.bind(this, 'NewTodo');
+const AddButton = ({ addTask }) => {
+  const _addTask = addTask.bind(this, 'New Task');
   return (
     <a
       className="fab"
       id="addButton"
-      onClick={_addTodo}
+      onClick={_addTask}
     >
       <i className="material-icons">add</i>
     </a>
@@ -15,7 +15,7 @@ const AddButton = ({ addTodo }) => {
 };
 
 AddButton.propTypes = {
-  addTodo: PropTypes.func.isRequired,
+  addTask: PropTypes.func.isRequired,
 };
 
 export default AddButton;

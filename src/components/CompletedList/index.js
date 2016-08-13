@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import './completedList.css';
 
-const CompletedList = ({ todos, clearCompleted }) => {
+const CompletedList = ({ tasks, clearCompleted }) => {
   const _clearCompleted = clearCompleted.bind(this);
   return (
     <div
@@ -9,8 +9,8 @@ const CompletedList = ({ todos, clearCompleted }) => {
       onDoubleClick={_clearCompleted}
     >
       <div className="todoContainer">
-        {todos.map(todo =>
-          <div key={todo.id} className="todo completed">{todo.title}</div>
+        {tasks.map(task =>
+          <div key={task.id} className="todo completed">{task.title}</div>
         )}
       </div>
     </div>
@@ -18,7 +18,7 @@ const CompletedList = ({ todos, clearCompleted }) => {
 };
 
 CompletedList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({
+  tasks: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

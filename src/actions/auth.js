@@ -1,9 +1,9 @@
 import config from '../../config';
-import { initTasks } from './todos';
+import { initLists } from './tasksAsync.js';
 
 export const loadTasksApi = () => dispatch => {
   gapi.client.load('tasks', 'v1', () => {
-    dispatch(initTasks());
+    dispatch(initLists());
   });
 };
 

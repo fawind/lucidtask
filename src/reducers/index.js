@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-import todos from './todos';
-import lists from './lists';
+import activeTasklist from './activeTasklist';
+import tasklists from './tasklists';
 
-const todoApp = combineReducers({ todos, lists });
-
-export default todoApp;
+export default combineReducers({
+  activeTasklist,
+  tasklists,
+});
