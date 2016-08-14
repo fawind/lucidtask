@@ -1,7 +1,5 @@
 import tasks from './tasks';
 
-import initialState from '../initialState';
-
 const list = (state, action) => {
   switch (action.type) {
     case 'OPEN_LIST': {
@@ -20,8 +18,11 @@ const list = (state, action) => {
   }
 };
 
-const lists = (state = initialState.lists, action) => {
+const lists = (state = [], action) => {
   switch (action.type) {
+    case 'API_ERROR':
+      console.error(action);
+      return action.state.lists;
     case 'ADD_LIST':
       return [
         ...state,
@@ -29,6 +30,8 @@ const lists = (state = initialState.lists, action) => {
       ];
     case 'DELETE_LIST':
       return state.filter(l => l.id !== action.id);
+    case 'INIT_LISTS':
+      return action.lists;
     default:
       return state.map(l => list(l, action));
   }

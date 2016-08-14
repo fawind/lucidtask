@@ -46,12 +46,6 @@ export const closeList = () => ({
   type: 'CLOSE_LIST',
 });
 
-export const switchList = (listId, tasks) => ({
-  type: 'SWITCH_LIST',
-  listId,
-  tasks,
-});
-
 export const addList = (id, title) => ({
   type: 'ADD_LIST',
   id,
@@ -63,7 +57,7 @@ export const deleteList = (id) => ({
   id,
 });
 
-export const initLists = (tasklists) => ({
+export const initLists = (lists) => ({
   type: 'INIT_LISTS',
-  tasklists,
+  lists,
 });

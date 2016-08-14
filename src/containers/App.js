@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Tasklist from '../components/Tasklist';
-import * as taskActions from '../actions/tasks.js';
+import ListHolder from '../components/ListHolder';
+import * as taskActions from '../actions/tasksAsync.js';
 import './app.css';
 
 const App = ({ lists, actions }) => {
   return (
-    <Tasklist lists={lists} actions={actions} />
+    <ListHolder lists={lists} actions={actions} />
   );
 };
 

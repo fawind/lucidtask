@@ -1,70 +1,59 @@
 import React, { Component, PropTypes } from 'react';
-import FlipMove from 'react-flip-move';
 import Reorder from 'react-reorder';
-import ListItem from '../ListItem';
+import chroma from 'chroma-js';
 import TaskItem from '../TaskItem';
-import './styles.css';
+import CompletedItem from '../CompletedItem';
+
+const colorScale = chroma.scale(['#F44336', '#FFD54F']);
 
 export default class Tasklist extends Component {
-
-  getActiveList() {
-    const activeList = this.props.lists.filter(l => l.active);
-    if (activeList.length === 0) return null;
-    return activeList[0];
+  getOpenTasks() {
+    const openTasks = this.props.tasks.filter(t => t.status !== 'completed');
+    return this.initItems(openTasks);
   }
 
-  renderLists() {
-    return this.props.lists.map(list => (
-      <ListItem
-        {...list}
-        closeList={this.props.actions.closeList}
-        openList={this.props.actions.openList}
-        key={list.id}
-      />
-    ));
+  getCompletedTasks() {
+    return this.props.tasks.filter(t => t.status === 'completed');
   }
 
-  renderTasks(activeList) {
-    console.log(activeList.tasks);
-    const view = [];
-    view.push(
-      <ListItem
-        {...activeList}
-        closeList={this.props.actions.closeList}
-        openList={this.props.actions.openList}
-        key={activeList.id}
-      />
-    );
-    view.push(
-      <Reorder
-        key="listitem"
-        itemKey="id"
-        lock="horizontal"
-        holdTime="500"
-        list={activeList.tasks}
-        template={TaskItem}
-        itemClass="item task"
-      />
-    );
-    return view;
+  initItems(tasks) {
+    const total = tasks.length;
+    return tasks.map((task, index) => {
+      const color = colorScale(index / total).hex();
+      return Object.assign(
+        {},
+        task,
+        { color, edit: false, actions: false }
+      );
+    });
   }
 
-  renderListElements() {
-    const activeList = this.getActiveList();
-    if (!activeList) return this.renderLists();
-    return this.renderTasks(activeList);
+  itemClicked(e, item) {
+    const _item = item;
+    _item.edit = true;
   }
 
   render() {
     return (
-      <FlipMove>
-        { this.renderListElements() }
-      </FlipMove>
+      <div>
+        <Reorder
+          key="listitem"
+          itemKey="id"
+          lock="horizontal"
+          holdTime="500"
+          list={this.getOpenTasks()}
+          itemClicked={this.itemClicked}
+          template={TaskItem}
+          itemClass="taskContainer"
+        />
+        {this.getCompletedTasks().map(task => (
+          <CompletedItem item={task} key={task.id} />
+        ))}
+      </div>
     );
   }
 }
 
 Tasklist.propTypes = {
-  lists: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired,
+  tasks: PropTypes.array.isRequired,
 };

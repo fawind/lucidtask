@@ -1,0 +1,29 @@
+.item {
+    font-size: 2rem;
+    padding: 1rem;
+    white-space: nowrap;
+}
+
+.item.list {
+  background-color: #455a64;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.item.task {
+
+}
+
+.item.task.completed {
+  background-color: #263238;
+  color: #37474F;
+  text-decoration: line-through;
+}
+
+.taskContainer.dragged {
+  box-shadow: 0 6px 100px black;
+}
+
+.taskContainer.placeholder {
+  visibility: hidden;
+}

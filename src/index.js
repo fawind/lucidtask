@@ -14,7 +14,7 @@ const store = createStore(todoApp,
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
-// window.onload = () => store.dispatch(checkAuth());
+window.onload = () => store.dispatch(checkAuth());
 
 render(
   <Provider store={store}>

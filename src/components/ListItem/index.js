@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-import initState from '../../initialState';
-const tasks = initState.lists[3].tasks;
-
 export default class ListItem extends Component {
   constructor(props, context) {
     super(props, context);
@@ -11,7 +8,7 @@ export default class ListItem extends Component {
 
   toggleList() {
     if (!this.props.active) {
-      this.props.openList(this.props.id, tasks);
+      this.props.openList(this.props.id);
     } else {
       this.props.closeList();
     }
