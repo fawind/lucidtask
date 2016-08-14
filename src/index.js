@@ -10,10 +10,11 @@ import { checkAuth } from './actions/auth';
 
 const store = createStore(todoApp,
   compose(
-    applyMiddleware(thunkMiddleware)
+    applyMiddleware(thunkMiddleware),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
-window.onload = () => store.dispatch(checkAuth());
+// window.onload = () => store.dispatch(checkAuth());
 
 render(
   <Provider store={store}>

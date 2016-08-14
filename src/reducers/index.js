@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
-import activeTasklist from './activeTasklist';
-import tasklists from './tasklists';
+import lists from './lists';
 
 export default combineReducers({
-  activeTasklist,
-  tasklists,
+  lists,
 });

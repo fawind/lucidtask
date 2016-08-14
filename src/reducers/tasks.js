@@ -1,5 +1,3 @@
-import initialState from '../sampleData';
-
 const task = (state, action) => {
   switch (action.type) {
     case 'ADD_TASK':
@@ -52,13 +50,4 @@ const tasks = (state, action) => {
   }
 };
 
-const activeTasklist = (state = { id: '-1', tasks: [] }, action) => {
-  switch (action.type) {
-    case 'SWITCH_LIST':
-      return { id: action.listId, tasks: action.tasks };
-    default:
-      return Object.assign({}, state, { tasks: tasks(state.tasks, action) });
-  }
-};
-
-export default activeTasklist;
+export default tasks;

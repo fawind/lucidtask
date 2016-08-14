@@ -36,6 +36,16 @@ export const clearCompleted = () => ({
   type: 'CLEAR_COMPLETED',
 });
 
+export const openList = (id, tasks) => ({
+  type: 'OPEN_LIST',
+  id,
+  tasks,
+});
+
+export const closeList = () => ({
+  type: 'CLOSE_LIST',
+});
+
 export const switchList = (listId, tasks) => ({
   type: 'SWITCH_LIST',
   listId,
