@@ -23,12 +23,9 @@ export default class TaskInputItem extends Component {
   }
 
   _submitText() {
-    console.log('submitText');
-    if (this.state.title === this.props.item.title) {
-      ReactDOM.findDOMNode(this.refs.input).blur();
-      this.props.item.edit = false;
-      return;
-    }
+    ReactDOM.findDOMNode(this.refs.input).blur();
+    this.props.item.edit = false;
+    if (this.state.title === this.props.item.title) return;
     this.props.editTask(this.props.item.id, this.state.title);
   }
 

@@ -6,6 +6,7 @@
 .completedWrapper .item.task {
   text-decoration: line-through;
   float: left;
+  position: relative;
 }
 
 .completedWrapper .actionPlaceholder {
@@ -17,8 +18,11 @@
   border: solid;
   cursor: pointer;
   visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0.3s, opacity 0.3s linear;
 }
 
 .completedWrapper:hover .actionPlaceholder i {
   visibility: visible;
+  opacity: 1;
 }

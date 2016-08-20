@@ -39,6 +39,7 @@ export default class ListHolder extends Component {
         {...list}
         closeList={this.props.actions.closeList}
         openList={this.props.actions.openList}
+        deleteList={this.props.actions.deleteList}
         key={list.id}
       />
     ));

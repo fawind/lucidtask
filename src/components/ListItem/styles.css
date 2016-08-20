@@ -1,0 +1,26 @@
+.listItemWrapper {
+  color: #37474F;
+  overflow: hidden;
+}
+
+.listItemWrapper .item.list {
+  float: left;
+  color: white;
+  width: 100%;
+}
+
+.listItemWrapper .actionPlaceholder {
+  position: absolute;
+  right: 0;
+}
+
+.listItemWrapper .actionPlaceholder i {
+  border: solid;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.listItemWrapper .actionPlaceholder:hover i {
+  visibility: visible;
+}
+

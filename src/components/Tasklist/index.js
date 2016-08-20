@@ -8,6 +8,7 @@ export default class Tasklist extends Component {
     super(props, context);
     this.itemMoved = this.itemMoved.bind(this);
     this.itemSwipedOut = this.itemSwipedOut.bind(this);
+    this.openTasks = Object.assign({}, this.props.openTasks);
   }
 
   itemClicked(e, item) {
