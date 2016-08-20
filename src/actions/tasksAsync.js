@@ -26,8 +26,9 @@ export const addTask = (title) => (dispatch, getState) => {
 
 export const toggleTask = (taskId) => (dispatch, getState) => {
   const oldState = getState();
-  const activeList = getActiveList(oldState.lists);
   dispatch(actions.toggleTask(taskId));
+  const newState = getState();
+  const activeList = getActiveList(newState.lists);
   const updatedTask = getTask(activeList.tasks, taskId);
   gTasks.updateTask(activeList.id, updatedTask)
     .catch(error => dispatch(handleApiError(error, oldState)));

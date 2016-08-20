@@ -1,0 +1,24 @@
+.completedWrapper {
+  color: #37474F;
+  overflow: hidden;
+}
+
+.completedWrapper .item.task {
+  text-decoration: line-through;
+  float: left;
+}
+
+.completedWrapper .actionPlaceholder {
+  position: absolute;
+  right: 0;
+}
+
+.completedWrapper .actionPlaceholder i {
+  border: solid;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.completedWrapper:hover .actionPlaceholder i {
+  visibility: visible;
+}

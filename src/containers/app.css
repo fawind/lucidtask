@@ -8,6 +8,13 @@ html, body {
     font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 }
 
-.container {
-    padding: 0 0 0 4rem; /* Padding for sidebar */
+.listHolder {
+  margin: 0 auto;
+  width: 50rem;
+}
+
+@media (max-width: 60rem) {
+    .listHolder {
+        width: 100%;
+    }
 }

@@ -11,7 +11,8 @@ const list = (state, action) => {
     }
     default: {
       if (state.active && state.tasks) {
-        return tasks(state, action);
+        const newTasks = tasks(state.tasks, action);
+        return Object.assign({}, state, { tasks: newTasks });
       }
       return state;
     }

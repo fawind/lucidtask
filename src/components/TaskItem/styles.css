@@ -6,28 +6,3 @@
     width: 100%;
     background-color: transparent;
 }
-
-.actions {
-  overflow: hidden;
-}
-
-.actions .item.task {
-  width: 70%;
-  float: left;
-}
-
-.actions .item.actionsPlaceholder {
-  position: absolute;
-  right: 0;
-  padding-left: 3rem;
-  padding-right: 3rem;
-  cursor: pointer;
-}
-
-.actions #done {
-  background-color: #8BC34A;
-}
-
-.actions #done:hover {
-  background-color: #8cd637;
-}

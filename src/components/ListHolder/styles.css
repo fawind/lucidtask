@@ -1,5 +1,6 @@
 .item {
     font-size: 2rem;
+    height: 2rem;
     padding: 1rem;
     white-space: nowrap;
 }
@@ -8,16 +9,7 @@
   background-color: #455a64;
   z-index: 100;
   cursor: pointer;
-}
-
-.item.task {
-
-}
-
-.item.task.completed {
-  background-color: #263238;
-  color: #37474F;
-  text-decoration: line-through;
+  border-bottom: 1px solid #37474F;
 }
 
 .taskContainer.dragged {

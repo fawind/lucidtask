@@ -1,36 +1,28 @@
 import React, { Component, PropTypes } from 'react';
-import Reorder from 'react-reorder';
-import chroma from 'chroma-js';
+import Reorder from '../Reorder';
 import TaskItem from '../TaskItem';
-import CompletedItem from '../CompletedItem';
-
-const colorScale = chroma.scale(['#F44336', '#FFD54F']);
+import CompletedTasklist from '../CompletedTasklist';
 
 export default class Tasklist extends Component {
-  getOpenTasks() {
-    const openTasks = this.props.tasks.filter(t => t.status !== 'completed');
-    return this.initItems(openTasks);
-  }
-
-  getCompletedTasks() {
-    return this.props.tasks.filter(t => t.status === 'completed');
-  }
-
-  initItems(tasks) {
-    const total = tasks.length;
-    return tasks.map((task, index) => {
-      const color = colorScale(index / total).hex();
-      return Object.assign(
-        {},
-        task,
-        { color, edit: false, actions: false }
-      );
-    });
+  constructor(props, context) {
+    super(props, context);
+    this.itemMoved = this.itemMoved.bind(this);
+    this.itemSwipedOut = this.itemSwipedOut.bind(this);
   }
 
   itemClicked(e, item) {
     const _item = item;
     _item.edit = true;
+  }
+
+  itemMoved(e, item, from, to) {
+    if (from === to) return;
+    const previousTaskId = this.openTasks[to].id;
+    this.props.actions.moveTask(item.id, previousTaskId);
+  }
+
+  itemSwipedOut(e, item) {
+    this.props.actions.toggleTask(item.id);
   }
 
   render() {
@@ -39,21 +31,30 @@ export default class Tasklist extends Component {
         <Reorder
           key="listitem"
           itemKey="id"
-          lock="horizontal"
+          lock="auto"
           holdTime="500"
-          list={this.getOpenTasks()}
-          itemClicked={this.itemClicked}
+          list={this.props.openTasks}
           template={TaskItem}
           itemClass="taskContainer"
+          itemClicked={this.itemClicked}
+          swipeOut={this.itemSwipedOut}
+          callback={this.itemMoved}
+          sharedProps={{
+            editTask: this.props.actions.editTask,
+          }}
         />
-        {this.getCompletedTasks().map(task => (
-          <CompletedItem item={task} key={task.id} />
-        ))}
+        <CompletedTasklist
+          tasks={this.props.completedTasks}
+          deleteTask={this.props.actions.deleteTask}
+          clearCompleted={this.props.actions.clearCompleted}
+        />
       </div>
     );
   }
 }
 
 Tasklist.propTypes = {
-  tasks: PropTypes.array.isRequired,
+  openTasks: PropTypes.array.isRequired,
+  completedTasks: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired,
 };

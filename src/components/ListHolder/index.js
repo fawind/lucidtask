@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import chroma from 'chroma-js';
 import FlipMove from 'react-flip-move';
 import ListItem from '../ListItem';
 import Tasklist from '../Tasklist';
+import AddButton from '../AddButton';
 import './styles.css';
+
+const colorScale = chroma.scale(['#F44336', '#FFD54F']);
 
 export default class ListHolder extends Component {
 
@@ -10,6 +14,23 @@ export default class ListHolder extends Component {
     const activeList = this.props.lists.filter(l => l.active);
     if (activeList.length === 0) return null;
     return activeList[0];
+  }
+
+  getOpenTasks(tasks) {
+    const openTasks = tasks.filter(t => t.status !== 'completed');
+    return this.initTasks(openTasks);
+  }
+
+  getCompletedTasks(tasks) {
+    return tasks.filter(t => t.status === 'completed');
+  }
+
+  initTasks(tasks) {
+    const total = tasks.length;
+    return tasks.map((task, index) => {
+      const color = colorScale(index / total).hex();
+      return Object.assign({}, task, { color, edit: false });
+    });
   }
 
   renderLists() {
@@ -24,6 +45,8 @@ export default class ListHolder extends Component {
   }
 
   renderTasks(activeList) {
+    const openTasks = this.getOpenTasks(activeList.tasks);
+    const completedTasks = this.getCompletedTasks(activeList.tasks);
     const view = [];
     view.push(
       <ListItem
@@ -35,8 +58,9 @@ export default class ListHolder extends Component {
     );
     view.push(
       <Tasklist
-        key={'tasklist:' + activeList.id}
-        tasks={activeList.tasks}
+        key={'tasklist: $(activeList.id)'}
+        openTasks={openTasks}
+        completedTasks={completedTasks}
         actions={this.props.actions}
       />
     );
@@ -49,11 +73,25 @@ export default class ListHolder extends Component {
     return this.renderTasks(activeList);
   }
 
+  renderButton() {
+    const activeList = this.getActiveList();
+    return (
+      <AddButton
+        addList={this.props.actions.addList}
+        addTask={this.props.actions.addTask}
+        listViewActive={!activeList}
+      />
+    );
+  }
+
   render() {
     return (
-      <FlipMove>
-        { this.renderListElements() }
-      </FlipMove>
+      <div>
+        <FlipMove>
+          {this.renderListElements()}
+        </FlipMove>
+        {this.renderButton()}
+      </div>
     );
   }
 }

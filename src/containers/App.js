@@ -5,11 +5,11 @@ import ListHolder from '../components/ListHolder';
 import * as taskActions from '../actions/tasksAsync.js';
 import './app.css';
 
-const App = ({ lists, actions }) => {
-  return (
+const App = ({ lists, actions }) => (
+  <div className="listHolder">
     <ListHolder lists={lists} actions={actions} />
-  );
-};
+  </div>
+);
 
 App.propTypes = {
   lists: PropTypes.array.isRequired,
@@ -23,7 +23,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(taskActions, dispatch) };
+  return {
+    actions: bindActionCreators(taskActions, dispatch),
+  };
 }
 
 export default connect(
