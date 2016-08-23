@@ -12,7 +12,11 @@ const App = ({ lists, actions }) => (
 );
 
 App.propTypes = {
-  lists: PropTypes.array.isRequired,
+  lists: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequied,
+    title: PropTypes.string.isRequied,
+    active: PropTypes.bool,
+  })).isRequired,
   actions: PropTypes.object.isRequired,
 };
 

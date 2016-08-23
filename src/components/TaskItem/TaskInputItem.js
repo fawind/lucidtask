@@ -49,6 +49,12 @@ export default class TaskInputItem extends Component {
 }
 
 TaskInputItem.propTypes = {
-  item: PropTypes.object.isRequired,
+  item: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    edit: PropTypes.bool.isRequied,
+  }).isRequired,
   editTask: PropTypes.func.isRequired,
 };

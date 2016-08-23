@@ -17,8 +17,16 @@ const TaskItem = ({ item, sharedProps }) => {
 };
 
 TaskItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  sharedProps: PropTypes.object.isRequired,
+  item: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    edit: PropTypes.bool.isRequired,
+  }).isRequired,
+  sharedProps: PropTypes.shape({
+    editTask: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default TaskItem;

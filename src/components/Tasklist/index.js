@@ -58,7 +58,15 @@ export default class Tasklist extends Component {
 }
 
 Tasklist.propTypes = {
-  openTasks: PropTypes.array.isRequired,
-  completedTasks: PropTypes.array.isRequired,
+  openTasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+  })).isRequired,
+  completedTasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+  })).isRequired,
   actions: PropTypes.object.isRequired,
 };

@@ -38,7 +38,11 @@ const CompletedTasklist = ({ tasks, deleteTask, clearCompleted }) => {
 };
 
 CompletedTasklist.propTypes = {
-  tasks: PropTypes.array.isRequired,
+  tasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+  })).isRequired,
   deleteTask: PropTypes.func.isRequired,
   clearCompleted: PropTypes.func.isRequired,
 };

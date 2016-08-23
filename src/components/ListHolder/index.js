@@ -98,6 +98,10 @@ export default class ListHolder extends Component {
 }
 
 ListHolder.propTypes = {
-  lists: PropTypes.array.isRequired,
+  lists: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    active: PropTypes.bool,
+  })).isRequired,
   actions: PropTypes.object.isRequired,
 };
