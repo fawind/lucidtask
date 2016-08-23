@@ -1,10 +1,6 @@
 language: node_js
 node_js:
-  - "5.0"
-install:
-  - npm install
+  - "6.0"
 cache:
   - directories:
     - node_modules
-scripts:
-  - npm test
