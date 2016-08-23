@@ -1,63 +1,72 @@
+import * as types from '../constants/actionTypes';
+
 export const addTask = (id, title) => ({
-  type: 'ADD_TASK',
+  type: types.ADD_TASK,
   id,
   title,
 });
 
 export const toggleTask = (id) => ({
-  type: 'TOGGLE_TASK',
+  type: types.TOGGLE_TASK,
   id,
 });
 
 export const deleteTask = (id) => ({
-  type: 'DELETE_TASK',
+  type: types.DELETE_TASK,
   id,
 });
 
 export const editTask = (id, title) => ({
-  type: 'EDIT_TASK',
+  type: types.EDIT_TASK,
   id,
   title,
 });
 
 export const moveTask = (id, newPreviousId) => ({
-  type: 'MOVE_TASK',
+  type: types.MOVE_TASK,
   id,
   newPreviousId,
 });
 
 export const updateTaskId = (oldId, newId) => ({
-  type: 'UPDATE_TASK_ID',
+  type: types.UPDATE_TASK_ID,
   oldId,
   newId,
 });
 
 export const clearCompleted = () => ({
-  type: 'CLEAR_COMPLETED',
+  type: types.CLEAR_COMPLETED,
 });
 
 export const openList = (id, tasks) => ({
-  type: 'OPEN_LIST',
+  type: types.OPEN_LIST,
   id,
   tasks,
 });
 
 export const closeList = () => ({
-  type: 'CLOSE_LIST',
+  type: types.CLOSE_LIST,
 });
 
 export const addList = (id, title) => ({
-  type: 'ADD_LIST',
+  type: types.ADD_LIST,
   id,
   title,
 });
 
 export const deleteList = (id) => ({
-  type: 'DELETE_LIST',
+  type: types.DELETE_LIST,
   id,
 });
 
 export const initLists = (lists) => ({
-  type: 'INIT_LISTS',
+  type: types.INIT_LISTS,
   lists,
+});
+
+
+export const handleApiError = (error, oldState) => ({
+  type: types.HANDLE_API_ERROR,
+  error,
+  oldState,
 });

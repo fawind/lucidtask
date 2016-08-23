@@ -7,12 +7,6 @@ import {
   getActiveList,
 } from '../util/helper';
 
-export const handleApiError = (error, oldState) => ({
-  type: 'HANDLE_API_ERROR',
-  error,
-  oldState,
-});
-
 export const addTask = (title) => (dispatch, getState) => {
   const oldState = getState();
   const listId = getActiveList(oldState.lists).id;
@@ -21,7 +15,7 @@ export const addTask = (title) => (dispatch, getState) => {
   dispatch(actions.addTask(tempId, title));
   gTasks.addTask(listId, title, previousTaskId)
     .then(res => dispatch(actions.updateTaskId(tempId, res.id)))
-    .catch(error => dispatch(handleApiError(error, oldState)));
+    .catch(error => dispatch(actions.handleApiError(error, oldState)));
 };
 
 export const toggleTask = (taskId) => (dispatch, getState) => {
@@ -31,7 +25,7 @@ export const toggleTask = (taskId) => (dispatch, getState) => {
   const activeList = getActiveList(newState.lists);
   const updatedTask = getTask(activeList.tasks, taskId);
   gTasks.updateTask(activeList.id, updatedTask)
-    .catch(error => dispatch(handleApiError(error, oldState)));
+    .catch(error => dispatch(actions.handleApiError(error, oldState)));
 };
 
 export const deleteTask = (taskId) => (dispatch, getState) => {
@@ -39,7 +33,7 @@ export const deleteTask = (taskId) => (dispatch, getState) => {
   const listId = getActiveList(oldState.lists).id;
   dispatch(actions.deleteTask(taskId));
   gTasks.deleteTask(listId, taskId)
-    .catch(error => dispatch(handleApiError(error, oldState)));
+    .catch(error => dispatch(actions.handleApiError(error, oldState)));
 };
 
 export const editTask = (taskId, title) => (dispatch, getState) => {
@@ -48,7 +42,7 @@ export const editTask = (taskId, title) => (dispatch, getState) => {
   const activeList = getActiveList(getState().lists);
   const updatedTask = getTask(activeList.tasks, taskId);
   gTasks.updateTask(activeList.id, updatedTask)
-    .catch(error => dispatch(handleApiError(error, oldState)));
+    .catch(error => dispatch(actions.handleApiError(error, oldState)));
 };
 
 export const moveTask = (taskId, newPreviousTaskId) => (dispatch, getState) => {
@@ -56,7 +50,7 @@ export const moveTask = (taskId, newPreviousTaskId) => (dispatch, getState) => {
   const listId = getActiveList(oldState.lists).id;
   dispatch(actions.moveTask(taskId, newPreviousTaskId));
   gTasks.moveTask(listId, taskId, newPreviousTaskId)
-    .catch(error => dispatch(handleApiError(error, oldState)));
+    .catch(error => dispatch(actions.handleApiError(error, oldState)));
 };
 
 export const clearCompleted = () => (dispatch, getState) => {
@@ -64,7 +58,7 @@ export const clearCompleted = () => (dispatch, getState) => {
   const listId = getActiveList(oldState.lists).id;
   dispatch(actions.clearCompleted());
   gTasks.clearTasks(listId)
-    .catch(error => dispatch(handleApiError(error, oldState)));
+    .catch(error => dispatch(actions.handleApiError(error, oldState)));
 };
 
 export const openList = (listId) => (dispatch) => {
@@ -74,7 +68,7 @@ export const openList = (listId) => (dispatch) => {
       if (res.hasOwnProperty('items')) tasks = res.items;
       dispatch(actions.openList(listId, tasks));
     })
-    .catch(error => dispatch(handleApiError(error, null)));
+    .catch(error => dispatch(actions.handleApiError(error, null)));
 };
 
 export const closeList = actions.closeList;
@@ -84,7 +78,7 @@ export const addList = (title) => (dispatch) => {
     .then(res => {
       dispatch(actions.addList(res.id, title));
     })
-    .catch(error => dispatch(handleApiError(error, null)));
+    .catch(error => dispatch(actions.handleApiError(error, null)));
 };
 
 export const deleteList = (id) => (dispatch, getState) => {
@@ -94,7 +88,7 @@ export const deleteList = (id) => (dispatch, getState) => {
       const state = getState();
       if (state.tasklists.length > 0) dispatch(closeList());
     })
-    .catch(error => dispatch(handleApiError(error, null)));
+    .catch(error => dispatch(actions.handleApiError(error, null)));
 };
 
 export const initLists = () => (dispatch) => {

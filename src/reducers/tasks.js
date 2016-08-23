@@ -1,21 +1,23 @@
+import * as types from '../constants/actionTypes';
+
 const task = (state, action) => {
   switch (action.type) {
-    case 'ADD_TASK':
+    case types.ADD_TASK:
       return {
         id: action.id,
         title: action.title,
         status: 'needsAction',
       };
-    case 'TOGGLE_TASK':
+    case types.TOGGLE_TASK:
       if (state.id !== action.id) return state;
       if (state.status === 'completed') {
         return Object.assign({}, state, { status: 'needsAction' });
       }
       return Object.assign({}, state, { status: 'completed' });
-    case 'EDIT_TASK':
+    case types.EDIT_TASK:
       if (state.id !== action.id) return state;
       return Object.assign({}, state, { title: action.title });
-    case 'UPDATE_TASK_ID':
+    case types.UPDATE_TASK_ID:
       if (state.id !== action.oldId) return state;
       return Object.assign({}, state, { id: action.newId });
     default:
@@ -25,15 +27,15 @@ const task = (state, action) => {
 
 const tasks = (state, action) => {
   switch (action.type) {
-    case 'ADD_TASK':
+    case types.ADD_TASK:
       return [...state, task(undefined, action)];
-    case 'TOGGLE_TASK':
+    case types.TOGGLE_TASK:
       return state.map(t => task(t, action));
-    case 'DELETE_TASK':
+    case types.DELETE_TASK:
       return state.filter(t => t.id !== action.id);
-    case 'EDIT_TASK':
+    case types.EDIT_TASK:
       return state.map(t => task(t, action));
-    case 'MOVE_TASK': {
+    case types.MOVE_TASK: {
       const newList = [...state];
       const fromIndex = state.findIndex(t => t.id === action.id);
       let toIndex = 0;
@@ -44,9 +46,9 @@ const tasks = (state, action) => {
       newList.splice(toIndex, 0, item);
       return newList;
     }
-    case 'UPDATE_TASK_ID':
+    case types.UPDATE_TASK_ID:
       return state.map(t => task(t, action));
-    case 'CLEAR_COMPLETED':
+    case types.CLEAR_COMPLETED:
       return state.filter(t => t.status !== 'completed');
     default:
       return state;

@@ -1,16 +1,17 @@
 import tasks from './tasks';
+import * as types from '../constants/actionTypes';
 
 const logError = (error) => {
-  console.log(error.code + ': ' + error.message, error);
+  console.log(`${error.code}: ${error.message}`, error);
 };
 
 const list = (state, action) => {
   switch (action.type) {
-    case 'OPEN_LIST': {
+    case types.OPEN_LIST: {
       if (state.id !== action.id) return state;
       return Object.assign({}, state, { active: true, tasks: action.tasks });
     }
-    case 'CLOSE_LIST': {
+    case types.CLOSE_LIST: {
       return Object.assign({}, state, { active: false });
     }
     default: {
@@ -25,17 +26,17 @@ const list = (state, action) => {
 
 const lists = (state = [], action) => {
   switch (action.type) {
-    case 'HANDLE_API_ERROR':
+    case types.HANDLE_API_ERROR:
       logError(action.error);
       return action.oldState.lists;
-    case 'ADD_LIST':
+    case types.ADD_LIST:
       return [
         ...state,
         { id: action.id, title: action.title, active: false },
       ];
-    case 'DELETE_LIST':
+    case types.DELETE_LIST:
       return state.filter(l => l.id !== action.id);
-    case 'INIT_LISTS':
+    case types.INIT_LISTS:
       return action.lists;
     default:
       return state.map(l => list(l, action));
