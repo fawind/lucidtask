@@ -7,7 +7,7 @@
     "start": "node server.js",
     "lint": "./node_modules/eslint/bin/eslint.js src",
     "test-only": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel-register --require ./test/setup.js",
-    "test": "npm run lint && npm run test-only",
+    "test": " npm run test-only && npm run lint",
     "build": "webpack --config ./webpack.build.config.js -p",
     "deploy": "(cd ./dist; appcfg.py update .)"
   },
