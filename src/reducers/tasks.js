@@ -36,7 +36,10 @@ const tasks = (state, action) => {
     case 'MOVE_TASK': {
       const newList = [...state];
       const fromIndex = state.findIndex(t => t.id === action.id);
-      const toIndex = state.findIndex(t => t.id === action.newPreviousId);
+      let toIndex = 0;
+      if (action.newPreviousId) {
+        toIndex = state.findIndex(t => t.id === action.newPreviousId);
+      }
       const item = newList.splice(fromIndex, 1)[0];
       newList.splice(toIndex, 0, item);
       return newList;

@@ -8,7 +8,7 @@ export default class Tasklist extends Component {
     super(props, context);
     this.itemMoved = this.itemMoved.bind(this);
     this.itemSwipedOut = this.itemSwipedOut.bind(this);
-    this.openTasks = Object.assign({}, this.props.openTasks);
+    this.openTasks = [...this.props.openTasks];
   }
 
   itemClicked(e, item) {
@@ -18,7 +18,10 @@ export default class Tasklist extends Component {
 
   itemMoved(e, item, from, to) {
     if (from === to) return;
-    const previousTaskId = this.openTasks[to].id;
+    let previousTaskId = null;
+    if (this.props.openTasks[to - 1]) {
+      previousTaskId = this.props.openTasks[to - 1].id;
+    }
     this.props.actions.moveTask(item.id, previousTaskId);
   }
 

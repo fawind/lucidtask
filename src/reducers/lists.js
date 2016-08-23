@@ -1,5 +1,9 @@
 import tasks from './tasks';
 
+const logError = (error) => {
+  console.log(error.code + ': ' + error.message, error);
+};
+
 const list = (state, action) => {
   switch (action.type) {
     case 'OPEN_LIST': {
@@ -21,9 +25,9 @@ const list = (state, action) => {
 
 const lists = (state = [], action) => {
   switch (action.type) {
-    case 'API_ERROR':
-      console.error(action);
-      return action.state.lists;
+    case 'HANDLE_API_ERROR':
+      logError(action.error);
+      return action.oldState.lists;
     case 'ADD_LIST':
       return [
         ...state,
