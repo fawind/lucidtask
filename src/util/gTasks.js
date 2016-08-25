@@ -1,38 +1,79 @@
 import config from '../../config';
 
+const LOGIN_REQUIRED = 401;
+
 /* === Authentication === */
 
-const _taskApiLoaded = () => console.log('Task API loaded!');
-
-const _loadTasksApi = () => {
-  gapi.client.load('tasks', 'v1', _taskApiLoaded);
-};
-
-const _handleAuthResult = (response) => {
+const _handleResponse = (response, resolve, reject) => {
   if (response && !response.error) {
-    _loadTasksApi();
+    resolve(response);
   } else {
-    _authorize(); // eslint-disable-line no-use-before-define
+    reject(response);
   }
 };
 
-const _authorize = () => {
-  const body = { client_id: config.CLIENT_ID, scope: config.SCOPES, immediate: false };
-  gapi.auth.authorize(body, _handleAuthResult);
+const loadTasksApi = () => (
+  new Promise(resolve =>
+    gapi.client.load('tasks', 'v1', () => resolve())
+  ));
+
+const authorize = () => {
+  const body = {
+    client_id: config.CLIENT_ID,
+    scope: config.SCOPES.join(' '),
+    immediate: false,
+  };
+  return new Promise((resolve, reject) => (
+    gapi.auth.authorize(body, response =>
+     _handleResponse(response, resolve, reject))));
 };
 
 const checkAuth = () => {
-  const body = { client_id: config.CLIENT_ID, scope: config.SCOPES.join(' '), immediate: true };
-  gapi.auth.authorize(body, _handleAuthResult);
+  const body = {
+    client_id: config.CLIENT_ID,
+    scope: config.SCOPES.join(' '),
+    immediate: true,
+  };
+  return new Promise((resolve, reject) => (
+    gapi.auth.authorize(body, response =>
+      _handleResponse(response, resolve, reject))));
 };
 
 /* === Tasks API === */
 
+/**
+ * Refresh the session and retry a request.
+ * @param {function} request - Request to retry.
+ * @param {function} resolve - Callback to be called on successfull retry
+ * @param {function} reject - Callback to be called on failed sesison refresh.
+ * @return {Promise} Request promise.
+ */
+const _refreshAuthAndRetry = (request, resolve, reject) => {
+  checkAuth()
+    .then(() => ( // eslint-disable-next-line no-use-before-define
+      _executeRequest(request)
+        .then((response) => resolve(response))
+        .catch((response) => reject(response))
+    ))
+    .catch((response) => {
+      reject(response);
+    });
+};
+
+/**
+ * Execute a request.
+ * @param {function} request - Google api request to execute.
+ * @return {Promise} Request promise.
+ */
 const _executeRequest = (request) => (
   new Promise((resolve, reject) => {
     request.execute(response => {
       if (response.error) {
-        reject(response);
+        if (response.error === LOGIN_REQUIRED) {
+          _refreshAuthAndRetry(request, resolve, reject);
+        } else {
+          reject(response);
+        }
       } else {
         resolve(response);
       }
@@ -146,7 +187,11 @@ const deleteList = (tasklist) => {
 };
 
 export default {
+  // Auth
+  authorize,
+  loadTasksApi,
   checkAuth,
+  // Tasks
   getTasks,
   updateTask,
   deleteTask,
