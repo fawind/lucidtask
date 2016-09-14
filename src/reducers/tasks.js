@@ -36,14 +36,17 @@ const tasks = (state, action) => {
     case types.EDIT_TASK:
       return state.map(t => task(t, action));
     case types.MOVE_TASK: {
-      const fromIndex = state.findIndex(t => t.id === action.id);
+      const newList = [...state];
+      const fromIndex = newList.findIndex(t => t.id === action.id);
+      if (fromIndex === -1) return state;
+      const item = newList.splice(fromIndex, 1)[0];
+
       let toIndex = 0;
       if (action.newPreviousId) {
-        toIndex = state.findIndex(t => t.id === action.newPreviousId);
+        toIndex = newList.findIndex(t => t.id === action.newPreviousId);
+        toIndex++;
       }
-      if (fromIndex === -1 || toIndex === -1) return state;
-      const newList = [...state];
-      const item = newList.splice(fromIndex, 1)[0];
+      if (toIndex === -1 || toIndex > newList.length) return state;
       newList.splice(toIndex, 0, item);
       return newList;
     }

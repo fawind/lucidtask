@@ -97,7 +97,7 @@ describe('task reducer', () => {
     });
 
     it('should move a task up', () => {
-      expect(reducer(mockState, actions.moveTask(3, 2)))
+      expect(reducer(mockState, actions.moveTask(3, 1)))
         .toEqual([
           { id: 1, title: 'Task1', status: 'needsAction' },
           { id: 3, title: 'Task3', status: 'completed' },
