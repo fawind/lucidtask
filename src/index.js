@@ -6,7 +6,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import todoApp from './reducers';
 import App from './containers/App';
-import { checkAuth } from './actions/auth';
+import { initAuth } from './actions/auth';
 
 const store = createStore(todoApp,
   compose(
@@ -14,7 +14,8 @@ const store = createStore(todoApp,
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 );
-window.onload = () => store.dispatch(checkAuth());
+// window.onload = () => store.dispatch(checkAuth());
+window.onload = () => gapi.load('client:auth2', () => store.dispatch(initAuth()));
 
 render(
   <Provider store={store}>

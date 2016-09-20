@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ListHolder from '../components/ListHolder';
-import * as taskActions from '../actions/tasksAsync.js';
+import LandingPage from '../components/LandingPage';
+import * as taskActions from '../actions/tasksAsync';
 import './app.css';
 
 const renderTaskApp = (lists, actions) => (
@@ -13,7 +14,7 @@ const renderTaskApp = (lists, actions) => (
 
 const App = ({ lists, account, actions }) => {
   if (account.loggedIn) return renderTaskApp(lists, actions);
-  return <div></div>;
+  return <LandingPage />;
 };
 
 App.propTypes = {

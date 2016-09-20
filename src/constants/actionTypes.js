@@ -16,3 +16,5 @@ export const INIT_LISTS = 'INIT_LISTS';
 
 /* Misc */
 export const HANDLE_API_ERROR = 'HANDLE_API_ERROR';
+export const SIGNED_IN = 'SIGNED_IN';
+export const SIGNED_OUT = 'SIGNED_OUT';

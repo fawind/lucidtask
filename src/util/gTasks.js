@@ -1,64 +1,9 @@
-import config from '../../config';
-
-const LOGIN_REQUIRED = 401;
-
-/* === Authentication === */
-
-const _handleResponse = (response, resolve, reject) => {
-  if (response && !response.error) {
-    resolve(response);
-  } else {
-    reject(response);
-  }
-};
-
 const loadTasksApi = () => (
   new Promise(resolve =>
     gapi.client.load('tasks', 'v1', () => resolve())
   ));
 
-const authorize = () => {
-  const body = {
-    client_id: config.CLIENT_ID,
-    scope: config.SCOPES.join(' '),
-    immediate: false,
-  };
-  return new Promise((resolve, reject) => (
-    gapi.auth.authorize(body, response =>
-     _handleResponse(response, resolve, reject))));
-};
-
-const checkAuth = () => {
-  const body = {
-    client_id: config.CLIENT_ID,
-    scope: config.SCOPES.join(' '),
-    immediate: true,
-  };
-  return new Promise((resolve, reject) => (
-    gapi.auth.authorize(body, response =>
-      _handleResponse(response, resolve, reject))));
-};
-
 /* === Tasks API === */
-
-/**
- * Refresh the session and retry a request.
- * @param {function} request - Request to retry.
- * @param {function} resolve - Callback to be called on successfull retry
- * @param {function} reject - Callback to be called on failed sesison refresh.
- * @return {Promise} Request promise.
- */
-const _refreshAuthAndRetry = (request, resolve, reject) => {
-  checkAuth()
-    .then(() => ( // eslint-disable-next-line no-use-before-define
-      _executeRequest(request)
-        .then((response) => resolve(response))
-        .catch((response) => reject(response))
-    ))
-    .catch((response) => {
-      reject(response);
-    });
-};
 
 /**
  * Execute a request.
@@ -69,11 +14,7 @@ const _executeRequest = (request) => (
   new Promise((resolve, reject) => {
     request.execute(response => {
       if (response.error) {
-        if (response.error === LOGIN_REQUIRED) {
-          _refreshAuthAndRetry(request, resolve, reject);
-        } else {
-          reject(response);
-        }
+        reject(response);
       } else {
         resolve(response);
       }
@@ -187,11 +128,7 @@ const deleteList = (tasklist) => {
 };
 
 export default {
-  // Auth
-  authorize,
   loadTasksApi,
-  checkAuth,
-  // Tasks
   getTasks,
   updateTask,
   deleteTask,
