@@ -16,6 +16,7 @@ module.exports = {
       { from: './app.yaml', to: 'app.yaml' },
       { from: './src/index.html', to: 'public/' },
       { from: './src/favicon.png', to: 'public/' },
+      { from: './src/manifest.webmanifest', to: 'public/' },
     ]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"',

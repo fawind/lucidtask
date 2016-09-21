@@ -1,0 +1,11 @@
+{
+  "name": "LucidTask",
+  "short_name": "LucidTask",
+  "start_url": ".",
+  "display": "fullscreen",
+  "theme_color": "#455a64",
+  "background_color": "#263238",
+  "description": "LucidTask, your minimal task app.",
+  "lang": "en-US",
+  "orientation": "portrait"
+}

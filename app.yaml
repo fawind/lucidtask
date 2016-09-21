@@ -31,6 +31,12 @@ handlers:
   static_files: public/\1
   upload: public/(.*\.(bmp|gif|ico|jpeg|jpg|png))
 
+- url: /(.*\.(appcache|manifest|webmanifest))
+  mime_type: text/cache-manifest
+  static_files: public/\1
+  upload: public/(.*\.(appcache|manifest|webmanifest))
+  expiration: "0m"
+
 # index files
 - url: /(.+)/
   static_files: public/\1/index.html
