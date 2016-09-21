@@ -14,7 +14,7 @@ const renderTaskApp = (lists, actions) => (
 
 const App = ({ lists, account, actions }) => {
   if (account.loggedIn) return renderTaskApp(lists, actions);
-  return <LandingPage />;
+  return <LandingPage account={account} />;
 };
 
 App.propTypes = {
