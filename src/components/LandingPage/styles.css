@@ -1,0 +1,94 @@
+.landingPage {
+  text-align: center;
+  margin: 0 auto;
+  width: 45rem;
+}
+
+.content {
+  margin-top: 10%;
+  color: #ECEFF1;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 4px solid #455a64;
+}
+
+.landingPage .title {
+  position: relative;
+  font-size: 2.5rem;
+  padding-left: 3rem;
+}
+
+.landingPage .title:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 100%;
+  background: url("~../../static/logo.png") no-repeat;
+  background-size: 100%;
+}
+
+.landingPage p {
+  margin: 0;
+  padding: 0.6em;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-bottom: 1px solid #263238;
+}
+
+.loginButton {
+  box-sizing: border-box;
+  position: relative;
+  margin: 0.2em;
+  padding: 0 10px 0 46px;
+  line-height: 40px;
+  white-space: nowrap;
+  border: none;
+  border-radius: 3px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #757575;
+  background: white;
+  cursor: pointer;
+}
+
+.loginButton:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 100%;
+  background: url("~../../static/btn-google.png") no-repeat;
+  background-size: 100%;
+}
+
+.loginButton:active {
+  box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+}
+
+.loginButton:hover {
+  opacity: 0.9;
+}
+
+.footer {
+  color: #455a64;
+  font-size: 1.2rem;
+}
+
+.footer a {
+  color: #455a64;
+}
+
+.footer a:visited {
+  color: #455a64;
+}
+
+@media (max-width: 50rem) {
+    .landingPage {
+        width: 90%;
+    }
+}
